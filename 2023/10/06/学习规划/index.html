@@ -22,7 +22,7 @@
 
   
 
-  <title>Hexo网页搭建 | Baorn&#39;s Blog</title>
+  <title>学习规划 | Baorn&#39;s Blog</title>
 
   
 
@@ -102,12 +102,17 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Hexo网页搭建</h1>
+          <h1 class="title-wrap">学习规划</h1>
           <h2 class="title-sub-wrap">
             <strong>Baron</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2023-10-04T06:00:20.000Z" itemprop="datePublished">2023-10-04</time>
+            <time  class="article-date" datetime="2023-10-06T12:32:52.000Z" itemprop="datePublished">2023-10-06</time>
           </h2>
+          
+            <h2 class="last-time">
+              <span>最后更新于</span>
+              <time  class="article-updated" datetime="2023-10-07T04:35:38.620Z" itemprop="dateUpdated">2023-10-07</time>
+            </h2>
           
           
           <ul class="wrap-list dark">
@@ -115,7 +120,7 @@
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/%E7%BD%91%E9%A1%B5%E5%BC%80%E5%8F%91/">🏷️ 网页开发</a></li>
+    <li><a href="/tags/%E5%AD%A6%E4%B9%A0%E8%A7%84%E5%88%92/">🏷️ 学习规划</a></li>
   
 </ul>
         </div>
@@ -139,26 +144,11 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="Hexo网页搭建"><a href="#Hexo网页搭建" class="headerlink" title="Hexo网页搭建"></a>Hexo网页搭建</h1><h4 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 git</span></span><br><span class="line">sudo apt-get install git</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 nodejs</span></span><br><span class="line">sudo apt-get install nodejs</span><br><span class="line">sudo apt-get install npm</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 hexo</span></span><br><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">环境验证</span></span><br><span class="line">git -v</span><br><span class="line">node -v</span><br><span class="line">npm -v</span><br><span class="line">hexo -v</span><br></pre></td></tr></table></figure>
-
-<h4 id="网页搭建一条龙"><a href="#网页搭建一条龙" class="headerlink" title="网页搭建一条龙"></a>网页搭建一条龙</h4><h5 id="网页初始化"><a href="#网页初始化" class="headerlink" title="网页初始化"></a>网页初始化</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo init myblog # hexo网页生成初始化 会在命令执行的当前目录生成一个 myblog 文件夹 </span><br><span class="line">hexo g # 生成静态文件</span><br></pre></td></tr></table></figure>
-
-<p>生成的文件目录</p>
-<p><img src="/../images/image-20231004141416658.png" alt="image-20231004141416658"></p>
-<h5 id="网页客制化"><a href="#网页客制化" class="headerlink" title="网页客制化"></a>网页客制化</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在themes文件夹里面 git <span class="built_in">clone</span> 主题（主题详见：https://hexo.io/themes/）</span></span><br><span class="line">git clone https://github.com/sanjinhub/hexo-theme-geek.git 文件名 </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置修改 _config.yml 设置主题 为 文件名</span></span><br><span class="line">theme: 文件名</span><br></pre></td></tr></table></figure>
-
-<p><img src="/../images/image-20231004141853724.png" alt="image-20231004141853724"></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">客制化网页信息：</span><br><span class="line">i.  修改myblog<span class="operator">/</span>themes<span class="operator">/</span>主题名称<span class="operator">/</span>_config.yml </span><br><span class="line">ii. 修改myblog<span class="operator">/</span>_config.yml</span><br></pre></td></tr></table></figure>
-
-<h4 id="网页部署"><a href="#网页部署" class="headerlink" title="网页部署"></a>网页部署</h4><h5 id="写博客"><a href="#写博客" class="headerlink" title="写博客"></a>写博客</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># myblog目录下</span><br><span class="line">hexo <span class="keyword">new</span> 文章名称</span><br></pre></td></tr></table></figure>
-
-<h5 id="生成静态网页"><a href="#生成静态网页" class="headerlink" title="生成静态网页"></a>生成静态网页</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">myblog目录下</span></span><br><span class="line">hexo clean &amp;&amp; hexo g</span><br></pre></td></tr></table></figure>
-
-<h5 id="静态网页部署到Github"><a href="#静态网页部署到Github" class="headerlink" title="静态网页部署到Github"></a>静态网页部署到Github</h5><p>i.  github里面创建一个 <code>github用户名.github.io</code> 的<code>repository </code>.</p>
-<p>ii. 将<code>myblog/public</code>目录中的所有文件上传到<code>repository</code>中即可（这是手动上传的方法）</p>
-<p>iii. 自动化上传git，请参考文档 <a target="_blank" rel="noopener" href="https://hexo.io/docs/github-pages">GitHub Pages | Hexo</a></p>
+        <h1 id="杂"><a href="#杂" class="headerlink" title="杂"></a>杂</h1><h4 id="js逆向-简单学习-HOOK"><a href="#js逆向-简单学习-HOOK" class="headerlink" title="js逆向-简单学习+HOOK"></a>js逆向-简单学习+HOOK</h4><p><a target="_blank" rel="noopener" href="https://www.52pojie.cn/thread-1160287-1-1.html">js逆向技巧分享</a></p>
+<h4 id="OSCP证书"><a href="#OSCP证书" class="headerlink" title="OSCP证书"></a>OSCP证书</h4><p><a target="_blank" rel="noopener" href="https://academy.tcm-sec.com/p/the-all-access-pass">TCM Security</a></p>
+<p><a target="_blank" rel="noopener" href="https://academy.tcm-sec.com/p/practical-ethical-hacking-the-complete-course?affcode=770707_ak1zjyso">购买优惠</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/460370063">OSCP通关攻略</a></p>
+<h4 id="实战渗透测试学习"><a href="#实战渗透测试学习" class="headerlink" title="实战渗透测试学习"></a>实战渗透测试学习</h4><h4 id="一些个真理"><a href="#一些个真理" class="headerlink" title="一些个真理"></a>一些个真理</h4><p>In my humble opinion, no course will make you an intermediet pentester, even when you get your OSCP you are at a begginer level. Only real life pentesting&#x2F;bug bounty will take you from the begginer level to intermediet and beyond level. Nice video BTW :)</p>
 
       </section>
 
@@ -171,8 +161,8 @@
     
     <div class="card-text">
       
-        <a href="/2023/10/06/%E5%AD%A6%E4%B9%A0%E8%A7%84%E5%88%92/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">学习规划</h2>
+        <a href="/2023/10/07/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">算法学习</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -186,8 +176,8 @@
     
     <div class="card-text">
       
-        <a href="/2023/10/03/%E6%8E%A5%E5%8F%A3%E6%8A%93%E5%8F%96-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">接口抓取</h2>
+        <a href="/2023/10/04/Hexo%E7%BD%91%E9%A1%B5%E6%90%AD%E5%BB%BA/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Hexo网页搭建</h2>
         </a>
       
       <div class="card-text--row">Older</div>
