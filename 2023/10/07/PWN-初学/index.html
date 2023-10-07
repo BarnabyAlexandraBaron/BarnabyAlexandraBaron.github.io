@@ -22,7 +22,7 @@
 
   
 
-  <title>接口抓取 | Baron&#39;s Blog</title>
+  <title>PWN-初学 | Baron&#39;s Blog</title>
 
   
 
@@ -102,11 +102,11 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">接口抓取</h1>
+          <h1 class="title-wrap">PWN-初学</h1>
           <h2 class="title-sub-wrap">
             <strong>Baron</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2023-10-03T05:34:18.119Z" itemprop="datePublished">2023-10-03</time>
+            <time  class="article-date" datetime="2023-10-07T14:22:35.000Z" itemprop="datePublished">2023-10-07</time>
           </h2>
           
           
@@ -115,7 +115,7 @@
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">🏷️ 网络安全</a></li>
+    <li><a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%89%E5%85%A8/">🏷️ 二进制安全</a></li>
   
 </ul>
         </div>
@@ -139,14 +139,14 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="接口抓取-持续更新"><a href="#接口抓取-持续更新" class="headerlink" title="接口抓取-持续更新"></a>接口抓取-持续更新</h1><h4 id="U净用户Token简单获取"><a href="#U净用户Token简单获取" class="headerlink" title="U净用户Token简单获取"></a>U净用户Token简单获取</h4><h5 id="main"><a href="#main" class="headerlink" title="main:"></a>main:</h5><p>一句话带过 : 后台一直代理抓包安卓的数据包 , 学会去看BP中的HTTP history , 在里面筛选获得token的数据包.( 核心: 学会使用 filter 筛选出核心的数据包 , 即可获得我们想要的接口)</p>
-<p><img src="/../images/image-20231003015220019.png" alt="image-20231003015220019"></p>
-<h5 id="result"><a href="#result" class="headerlink" title="result:"></a>result:</h5><p><img src="/../images/image-20231003014630858.png" alt="image-20231003014630858"></p>
-<p>利用BP的gadget提取一下数据包为curl的shell命令,方便以后调用.</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">发验证码的 API</span><br><span class="line">curl -i -s -k -X $&#x27;GET&#x27; \</span><br><span class="line">    -H $&#x27;Host: phoenix.ujing.online&#x27; -H $&#x27;X-Mobile-Brand: OPPO&#x27; -H $&#x27;X-Mobile-Id: &#x27; -H $&#x27;X-App-Code: ZA&#x27; -H $&#x27;Content-Type: application/json&#x27; -H $&#x27;X-App-Version: 2.4.3&#x27; -H $&#x27;X-Mobile-Model: PCLM10&#x27; -H $&#x27;Accept-Encoding: gzip, deflate&#x27; -H $&#x27;User-Agent: okhttp/4.3.1&#x27; -H $&#x27;Connection: close&#x27; \</span><br><span class="line">    -b $&#x27;acw_tc=15eff1b2d809942cc3b6116e3a1f4431205aaa72c79f82390f77cab5e53d939f&#x27; \</span><br><span class="line">    $&#x27;https://phoenix.ujing.online/api/v1/captcha?mobile=电话号码&amp;type=1&amp;sessionId=AFS_SWITCH_OFF&amp;token=AFS_SWITCH_OFF&amp;sig=AFS_SWITCH_OFF&#x27;</span><br></pre></td></tr></table></figure>
+        <h1 id="PWN-初学"><a href="#PWN-初学" class="headerlink" title="PWN-初学"></a>PWN-初学</h1><h4 id="一些个快捷键（无关紧要）"><a href="#一些个快捷键（无关紧要）" class="headerlink" title="一些个快捷键（无关紧要）"></a>一些个快捷键（无关紧要）</h4><h6 id="编写BAT脚本"><a href="#编写BAT脚本" class="headerlink" title="编写BAT脚本"></a>编写BAT脚本</h6><p>编写IDA使用的 <code>bash脚本</code>，并创建快捷方式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">filename：ida32.bat</span><br><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">cd</span> IDA可执行文件路径</span><br><span class="line"><span class="built_in">set</span> path=%~dp1</span><br><span class="line">start ida -i %1 -o %path%\outfile</span><br><span class="line"><span class="built_in">echo</span>  ida reverse analysis</span><br><span class="line">pause</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">验证验证码&amp;获取token的 API</span><br><span class="line">curl -i -s -k -X $&#x27;POST&#x27; \</span><br><span class="line">    -H $&#x27;Host: phoenix.ujing.online&#x27; -H $&#x27;X-Mobile-Brand: OPPO&#x27; -H $&#x27;X-Mobile-Id: &#x27; -H $&#x27;X-App-Code: ZA&#x27; -H $&#x27;X-App-Version: 2.4.3&#x27; -H $&#x27;X-Mobile-Model: PCLM10&#x27; -H $&#x27;Content-Type: application/json; charset=utf-8&#x27; -H $&#x27;Content-Length: 41&#x27; -H $&#x27;Accept-Encoding: gzip, deflate&#x27; -H $&#x27;User-Agent: okhttp/4.3.1&#x27; -H $&#x27;Connection: close&#x27; \</span><br><span class="line">    -b $&#x27;acw_tc=15eff1b2d809942cc3b6116e3a1f4431205aaa72c79f82390f77cab5e53d939f&#x27; \</span><br><span class="line">    --data-binary $&#x27;&#123;\&quot;captcha\&quot;:\&quot;验证码\&quot;,\&quot;mobile\&quot;:\&quot;电话号码\&quot;&#125;&#x27; \</span><br><span class="line">    $&#x27;https://phoenix.ujing.online/api/v1/login&#x27;</span><br></pre></td></tr></table></figure>
+<h6 id="设置SendTo"><a href="#设置SendTo" class="headerlink" title="设置SendTo"></a>设置SendTo</h6><p>复制粘贴到 <code>SenTo</code> 的目录中，设置发送到，快捷打开ida32</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">win+r shell:sendto</span><br></pre></td></tr></table></figure>
 
+<p><img src="/../images/image-20231007222757480.png" alt="image-20231007222757480"></p>
+<p>ida64的快捷打开方式也同理可得</p>
 
       </section>
 
@@ -154,28 +154,14 @@
       
         <nav class="article-nav">
           
-            <div class="article-nav-item layout-padding">
-  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
-    
-    <div class="card-text">
-      
-        <a href="/2023/10/04/Hexo%E7%BD%91%E9%A1%B5%E6%90%AD%E5%BB%BA/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Hexo网页搭建</h2>
-        </a>
-      
-      <div class="card-text--row">Newer</div>
-    </div>
-  </article>
-</div>
-          
           
             <div class="article-nav-item layout-padding">
   <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
     
     <div class="card-text">
       
-        <a href="/2023/10/03/%E6%96%87%E4%BB%B6%E6%95%B4%E7%90%86/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">文件整理</h2>
+        <a href="/2023/10/07/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">算法学习</h2>
         </a>
       
       <div class="card-text--row">Older</div>
