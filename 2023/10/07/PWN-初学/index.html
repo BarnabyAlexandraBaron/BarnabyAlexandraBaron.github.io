@@ -111,7 +111,7 @@
           
             <h2 class="last-time">
               <span>最后更新于</span>
-              <time  class="article-updated" datetime="2023-10-09T09:14:56.889Z" itemprop="dateUpdated">2023-10-09</time>
+              <time  class="article-updated" datetime="2023-10-09T14:13:38.627Z" itemprop="dateUpdated">2023-10-09</time>
             </h2>
           
           
@@ -146,17 +146,44 @@
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
         <h1 id="PWN-初学"><a href="#PWN-初学" class="headerlink" title="PWN-初学"></a>PWN-初学</h1><h4 id="gdb命令"><a href="#gdb命令" class="headerlink" title="gdb命令"></a>gdb命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Show all the <span class="built_in">functions</span></span></span><br><span class="line">info func</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Set A Brekpoint</span></span><br><span class="line">break main</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Set A Brekpoint</span></span><br><span class="line">break main</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Show All Break</span></span><br><span class="line">infp breakpoints</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Delete All BreakPoint</span></span><br><span class="line">delete</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Display The value of Certain Address</span></span><br><span class="line">x/s address</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Get Value OF Registers</span></span><br><span class="line">info registers eax</span><br><span class="line">info registers</span><br></pre></td></tr></table></figure>
+
 <h4 id="Objdump"><a href="#Objdump" class="headerlink" title="Objdump"></a>Objdump</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -d your_program &gt; assembly_code.txt</span><br></pre></td></tr></table></figure>
 
+<h4 id="汇编基础"><a href="#汇编基础" class="headerlink" title="汇编基础"></a>汇编基础</h4><h5 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h5><p>略</p>
+<p><img src="/../images/image-20231009192621570.png" alt="image-20231009192621570"></p>
+<h5 id="寻址方式"><a href="#寻址方式" class="headerlink" title="寻址方式"></a>寻址方式</h5><p>略</p>
+<h5 id="位，字节，字"><a href="#位，字节，字" class="headerlink" title="位，字节，字"></a>位，字节，字</h5><p>位：0，1。<code>位是计算机中最小的数据单元，它只能表示0或1，即二进制位。</code></p>
+<p>字节：8个0，1的组合。<code>字节是计算机中的基本数据单元，通常由8个位组成。</code></p>
+<p>字：机器不同，字可能不同。分为16位字（<strong>Word</strong>）、32位字（<strong>DWORD</strong>）、64位字（<strong>QWORD</strong>）</p>
+<h5 id="字符串在计算机中的存储"><a href="#字符串在计算机中的存储" class="headerlink" title="字符串在计算机中的存储"></a>字符串在计算机中的存储</h5><p>在这里只解释ASCII，作为用户常常输入的值</p>
+<p>ASCII的范围0~255，也就是256种（MAX）</p>
+<p>256&#x3D;2^8，因此 一个字符的二进制形式 可以由 8 个0或1 来表示，也就是一个字节</p>
+<p>举个栗子 <code>a </code>  <code>01100001</code></p>
+<h5 id="小端存储-大端存储"><a href="#小端存储-大端存储" class="headerlink" title="小端存储&amp;大端存储"></a>小端存储&amp;大端存储</h5><p>举个栗子</p>
+<p>字符串捏 <code>abc</code></p>
+<p>大端存储 <code>01100001 01100010 01100011</code> </p>
+<p>小端存储  <code>01100011 01100010 01100001</code> </p>
+<p>大端存储十六进制 <code>61 62 63</code>  </p>
+<p>小端存储十六进制 <code>63 62 61</code>  </p>
+<p>存储顺序 <code>低地址到高地址</code></p>
+<p>人读数据 <code>低地址到高地址</code></p>
+<p>注意：上面的数据从左到右 都是低地址到高地址</p>
+<h5 id="GCC相关"><a href="#GCC相关" class="headerlink" title="GCC相关"></a>GCC相关</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.c文件 c语言源文件</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Compile File</span></span><br><span class="line">gcc &lt;c文件名&gt; -o &lt;生成的可执行文件名&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">栗子</span></span><br><span class="line">gcc flag.c -o flag</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.s文件 汇编语言的源程序文件</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Compile File</span></span><br><span class="line">gcc &lt;s文件名&gt; -o &lt;生成的可执行文件名&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">栗子</span></span><br><span class="line">gcc flag.s -o flag</span><br></pre></td></tr></table></figure>
+
+<h5 id="ASM相关"><a href="#ASM相关" class="headerlink" title="ASM相关"></a>ASM相关</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将汇编代码转换成目标文件（机器语言）</span></span><br><span class="line">nasm -f elf64 -o output.o input.asm</span><br><span class="line">nasm -f elf64 -o flag.o flag.asm</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">链接目标文件,将目标文件与任何必要的库文件链接</span></span><br><span class="line">ld -s -o flag flag.o</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">说明：</span><br><span class="line">1、这里的 -f elf64 选项告诉nasm生成ELF64位格式的目标文件，32位，改为elf即可</span><br><span class="line">2、-s表示在可执行文件中去掉符号表和调试信息，使得可执行文件更小（copy CSDN）</span><br></pre></td></tr></table></figure>
 
 
 
-
-<h4 id="一些个快捷键（无关紧要）"><a href="#一些个快捷键（无关紧要）" class="headerlink" title="一些个快捷键（无关紧要）"></a>一些个快捷键（无关紧要）</h4><h6 id="编写BAT脚本"><a href="#编写BAT脚本" class="headerlink" title="编写BAT脚本"></a>编写BAT脚本</h6><p>编写IDA使用的 <code>bash脚本</code>，并创建快捷方式</p>
+<h4 id="快捷键（无关紧要）"><a href="#快捷键（无关紧要）" class="headerlink" title="快捷键（无关紧要）"></a>快捷键（无关紧要）</h4><h6 id="编写BAT脚本"><a href="#编写BAT脚本" class="headerlink" title="编写BAT脚本"></a>编写BAT脚本</h6><p>编写IDA使用的 <code>bash脚本</code>，并创建快捷方式</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">filename：ida32.bat</span><br><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">cd</span> IDA可执行文件路径</span><br><span class="line"><span class="built_in">set</span> path=%~dp1</span><br><span class="line">start ida -i %1 -o %path%\outfile</span><br><span class="line"><span class="built_in">echo</span>  ida reverse analysis</span><br><span class="line">pause</span><br></pre></td></tr></table></figure>
 
 <h6 id="设置SendTo"><a href="#设置SendTo" class="headerlink" title="设置SendTo"></a>设置SendTo</h6><p>复制粘贴到 <code>SenTo</code> 的目录中，设置发送到，快捷打开ida32</p>
