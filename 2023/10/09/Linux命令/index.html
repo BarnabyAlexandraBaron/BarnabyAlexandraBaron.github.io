@@ -22,7 +22,7 @@
 
   
 
-  <title>安卓渗透测试环境搭建 | Baron&#39;s Blog</title>
+  <title>Linux命令 | Baron&#39;s Blog</title>
 
   
 
@@ -102,11 +102,11 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">安卓渗透测试环境搭建</h1>
+          <h1 class="title-wrap">Linux命令</h1>
           <h2 class="title-sub-wrap">
             <strong>Baron</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2023-10-03T05:34:18.118Z" itemprop="datePublished">2023-10-03</time>
+            <time  class="article-date" datetime="2023-10-09T07:53:21.000Z" itemprop="datePublished">2023-10-09</time>
           </h2>
           
           
@@ -115,7 +115,7 @@
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">🏷️ 网络安全</a></li>
+    <li><a href="/tags/Linux%E5%9F%BA%E7%A1%80/">🏷️ Linux基础</a></li>
   
 </ul>
         </div>
@@ -139,30 +139,22 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="安卓渗透测试环境搭建"><a href="#安卓渗透测试环境搭建" class="headerlink" title="安卓渗透测试环境搭建"></a>安卓渗透测试环境搭建</h1><h4 id="环境准备："><a href="#环境准备：" class="headerlink" title="环境准备："></a>环境准备：</h4><p>openssl：提供证书相关操作</p>
-<p>雷电模拟器：提供安卓环境</p>
-<p>Burpsuite：渗透测试抓包工具</p>
-<h4 id="环境搭建："><a href="#环境搭建：" class="headerlink" title="环境搭建："></a>环境搭建：</h4><h5 id="0x01-获得bp的证书"><a href="#0x01-获得bp的证书" class="headerlink" title="0x01 获得bp的证书"></a>0x01 获得bp的证书</h5><p>访问bp中设置的地址即可获得证书 cacert.der</p>
-<p><img src="/../images/image-20231003010552628.png" alt="image-20231003010552628"></p>
-<h5 id="0x02-转换证书为pem"><a href="#0x02-转换证书为pem" class="headerlink" title="0x02 转换证书为pem"></a>0x02 转换证书为pem</h5><p>计算hash值&amp;生成pem文件&amp;生成.0文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -inform der -in cacert.der -out cacert.pem</span><br><span class="line">生成pem文件</span><br><span class="line">openssl x509 -inform PEM -subject_hash_old -in cacert.pem</span><br><span class="line">第二条命令看得到的hash值，重命名pem文件为 得到的hash值.0</span><br></pre></td></tr></table></figure>
+        <h1 id="Linux命令"><a href="#Linux命令" class="headerlink" title="Linux命令"></a>Linux命令</h1><h4 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">File Download</span></span><br><span class="line">wget -O filename url</span><br><span class="line">wget -O Welcome_to_Ctfshow.asm https://ctf.show/files/Welcome_to_CTFshow.asm</span><br></pre></td></tr></table></figure>
 
-<p><img src="/../images/image-20231003011744986.png" alt="image-20231003011744986"></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">其实复制粘贴就行，只要终端输出的内容，终端运行一行代码就够了其实</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Rename File or Move</span></span><br><span class="line">mv source_file destination_file</span><br><span class="line">mv nice welcome_to_ctfshow.asm</span><br></pre></td></tr></table></figure>
 
-<p><img src="/../images/image-20231003011906360.png" alt="image-20231003011906360"></p>
-<h5 id="0x03-导入证书"><a href="#0x03-导入证书" class="headerlink" title="0x03 导入证书"></a>0x03 导入证书</h5><p>i. 开启雷电模拟器的system可以写入权限和root权限（踩坑，一定记得开System.vmdk可以写入权限，不然导入不了证书，写入会被积极拒绝）【题外话：雷电模拟器也是为了加快运行才加了这个默认限制，大家轻一点喷】</p>
-<p><img src="/../images/image-20231003012501105.png" alt="image-20231003012501105"></p>
-<p>ii. 导入证书</p>
-<p>复制粘贴 Hash值.0文件到 &#x2F;system&#x2F;etc&#x2F;security&#x2F;cacerts&#x2F;。图里面是用的MT管理器，这里大家可以各显神通，adb shell传进去也行。</p>
-<p><img src="/../images/image-20231003012725150.png" alt="image-20231003012725150"></p>
-<h5 id="0x04-配置代理"><a href="#0x04-配置代理" class="headerlink" title="0x04 配置代理"></a>0x04 配置代理</h5><p>i. 在BP中绑定监听的IP（你主机有网的那个IP，不够严谨，初学者记得是有网的那个IP就行）。</p>
-<p><img src="/../images/image-20231003012127291.png" alt="image-20231003012127291"></p>
-<p>ii. 在手机系统设置中设置代理到，BP中设置的IP和端口即可。</p>
-<p><img src="/../images/image-20231003012252080.png" alt="image-20231003012252080"></p>
-<h5 id="0x05-Done-抓包测试"><a href="#0x05-Done-抓包测试" class="headerlink" title="0x05 Done - 抓包测试"></a>0x05 Done - 抓包测试</h5><p>这里演示一下抓包U净的接口</p>
-<p><img src="/../images/image-20231003013225392.png" alt="image-20231003013225392"></p>
-<p>到此就结束了，希望搭环境过程一路顺风。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">History Command filter</span></span><br><span class="line">history | grep string_filter</span><br><span class="line">history | grep iptables</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Printf</span></span><br><span class="line">printf “%d\n” 0x36d	</span><br></pre></td></tr></table></figure>
+
+<h4 id="gdb命令"><a href="#gdb命令" class="headerlink" title="gdb命令"></a>gdb命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Show all the <span class="built_in">functions</span></span></span><br><span class="line">info func</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Set A Brekpoint</span></span><br><span class="line">break main</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Show All Break</span></span><br><span class="line">infp breakpoints</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Delete All BreakPoint</span></span><br><span class="line">delete</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Display The value of Certain Address</span></span><br><span class="line">x/s address</span><br></pre></td></tr></table></figure>
+
+<h4 id="Objdump"><a href="#Objdump" class="headerlink" title="Objdump"></a>Objdump</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -d your_program &gt; assembly_code.txt</span><br></pre></td></tr></table></figure>
+
 
       </section>
 
@@ -170,28 +162,14 @@
       
         <nav class="article-nav">
           
-            <div class="article-nav-item layout-padding">
-  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
-    
-    <div class="card-text">
-      
-        <a href="/2023/10/03/%E5%9F%BA%E7%A1%80%E5%AE%9E%E9%AA%8C/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">基础实验</h2>
-        </a>
-      
-      <div class="card-text--row">Newer</div>
-    </div>
-  </article>
-</div>
-          
           
             <div class="article-nav-item layout-padding">
   <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
     
     <div class="card-text">
       
-        <a href="/2023/10/03/hello-world/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Hello World</h2>
+        <a href="/2023/10/07/PWN-%E5%88%9D%E5%AD%A6/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">PWN-初学</h2>
         </a>
       
       <div class="card-text--row">Older</div>
