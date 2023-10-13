@@ -22,7 +22,7 @@
 
   
 
-  <title>学习规划 | Baron&#39;s Blog</title>
+  <title>计算机网络-基础知识-MAC地址 | Baron&#39;s Blog</title>
 
   
 
@@ -102,17 +102,12 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">学习规划</h1>
+          <h1 class="title-wrap">计算机网络-基础知识-MAC地址</h1>
           <h2 class="title-sub-wrap">
             <strong>Baron</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2023-10-06T12:32:52.000Z" itemprop="datePublished">2023-10-06</time>
+            <time  class="article-date" datetime="2023-10-12T14:20:26.000Z" itemprop="datePublished">2023-10-12</time>
           </h2>
-          
-            <h2 class="last-time">
-              <span>最后更新于</span>
-              <time  class="article-updated" datetime="2023-10-09T08:26:38.878Z" itemprop="dateUpdated">2023-10-09</time>
-            </h2>
           
           
           <ul class="wrap-list dark">
@@ -120,7 +115,7 @@
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/%E5%AD%A6%E4%B9%A0%E8%A7%84%E5%88%92/">🏷️ 学习规划</a></li>
+    <li><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">🏷️ 计算机网络</a></li>
   
 </ul>
         </div>
@@ -144,12 +139,25 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="杂"><a href="#杂" class="headerlink" title="杂"></a>杂</h1><h4 id="js逆向-简单学习-HOOK"><a href="#js逆向-简单学习-HOOK" class="headerlink" title="js逆向-简单学习+HOOK"></a>js逆向-简单学习+HOOK</h4><p><a target="_blank" rel="noopener" href="https://www.52pojie.cn/thread-1160287-1-1.html">js逆向技巧分享</a></p>
-<h4 id="OSCP证书"><a href="#OSCP证书" class="headerlink" title="OSCP证书"></a>OSCP证书</h4><p><a target="_blank" rel="noopener" href="https://academy.tcm-sec.com/p/the-all-access-pass">TCM Security</a></p>
-<p><a target="_blank" rel="noopener" href="https://academy.tcm-sec.com/p/practical-ethical-hacking-the-complete-course?affcode=770707_ak1zjyso">购买优惠</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/460370063">OSCP通关攻略</a></p>
-<h4 id="实战渗透测试学习"><a href="#实战渗透测试学习" class="headerlink" title="实战渗透测试学习"></a>实战渗透测试学习</h4><h4 id="Pwn学习路线"><a href="#Pwn学习路线" class="headerlink" title="Pwn学习路线"></a>Pwn学习路线</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qinying001/article/details/100802002">CTF中pwn的入门指南</a></p>
-<h4 id="一些个真理"><a href="#一些个真理" class="headerlink" title="一些个真理"></a>一些个真理</h4><p>In my humble opinion, no course will make you an intermediet pentester, even when you get your OSCP you are at a begginer level. Only real life pentesting&#x2F;bug bounty will take you from the begginer level to intermediet and beyond level. Nice video BTW :)</p>
+        <h1 id="计算机网络-MAC地址"><a href="#计算机网络-MAC地址" class="headerlink" title="计算机网络-MAC地址"></a>计算机网络-MAC地址</h1><h4 id="MAC地址"><a href="#MAC地址" class="headerlink" title="MAC地址"></a>MAC地址</h4><p>关于为什么要学这部分，来自于想要改MAC地址去实现ARP欺骗攻击，以及尝试验证校园网的认证是否和MAC地址有关（尝试绕过校园网的认证）。在Kali Linux中修改过MAC地址，结果发现并不是任意的MAC地址都可以被用户自定义来使用【例如，自己想给自己一个独特的MAC地址：01：02：03：04：05：06，然而这个MAC作为用户wifi网卡的MAC地址显然是不成立的，受到规定的约束】。</p>
+<p>在计算机网络中，规定了MAC地址的种类。这里对他们进行阐述：</p>
+<p><strong>MAC地址</strong></p>
+<p>MAC地址是6个字节的数据（也就是48个bit的数据），用来标识世界上的不同的设备，通常那16个字节采用16进制位来表示。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">举个栗子</span></span><br><span class="line">5C:3A:45:B0:C7:66</span><br></pre></td></tr></table></figure>
+
+<p><strong>单播地址</strong></p>
+<p>MAC地址的第一个字节的最后一位为0，简单来说，单播地址的第一个字节是偶数，因此有 0，2，4，6，8，A，C，E。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">举个栗子</span></span><br><span class="line">5C:3A:45:B0:C7:66</span><br></pre></td></tr></table></figure>
+
+<p><strong>组播地址</strong></p>
+<p>MAC地址的第一个字节的最后一位为1，简单来说，单播地址的第一个字节是奇数，除开上面单播的偶数。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">举个栗子</span></span><br><span class="line">51:3A:45:B0:C7:66</span><br></pre></td></tr></table></figure>
+
+<p><strong>广播地址</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">只有一种情况</span></span><br><span class="line">FF:FF:FF:FF:FF:FF</span><br></pre></td></tr></table></figure>
+
+<p><strong>细节</strong></p>
+<p>用户网卡的MAC地址一般都是单播，因此第一个字节必须是偶数，所以一定不能随意更改。虽然改了系统会提示错误，不让你修改。</p>
 
       </section>
 
@@ -162,8 +170,8 @@
     
     <div class="card-text">
       
-        <a href="/2023/10/07/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">算法学习</h2>
+        <a href="/2023/10/13/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">编程基础</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -177,8 +185,8 @@
     
     <div class="card-text">
       
-        <a href="/2023/10/04/Hexo%E7%BD%91%E9%A1%B5%E6%90%AD%E5%BB%BA/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Hexo网页搭建</h2>
+        <a href="/2023/10/09/Linux%E5%91%BD%E4%BB%A4/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">Linux命令</h2>
         </a>
       
       <div class="card-text--row">Older</div>
