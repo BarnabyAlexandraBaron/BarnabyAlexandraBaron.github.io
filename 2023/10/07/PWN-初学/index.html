@@ -111,7 +111,7 @@
           
             <h2 class="last-time">
               <span>最后更新于</span>
-              <time  class="article-updated" datetime="2023-10-13T13:03:30.352Z" itemprop="dateUpdated">2023-10-13</time>
+              <time  class="article-updated" datetime="2023-10-14T07:56:38.489Z" itemprop="dateUpdated">2023-10-14</time>
             </h2>
           
           
@@ -176,6 +176,21 @@
 <h5 id="GCC相关"><a href="#GCC相关" class="headerlink" title="GCC相关"></a>GCC相关</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.c文件 c语言源文件</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Compile File</span></span><br><span class="line">gcc &lt;c文件名&gt; -o &lt;生成的可执行文件名&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">栗子</span></span><br><span class="line">gcc flag.c -o flag</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.s文件 汇编语言的源程序文件</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Compile File</span></span><br><span class="line">gcc &lt;s文件名&gt; -o &lt;生成的可执行文件名&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">栗子</span></span><br><span class="line">gcc flag.s -o flag</span><br></pre></td></tr></table></figure>
+
+<h5 id="GCC拓展"><a href="#GCC拓展" class="headerlink" title="GCC拓展"></a>GCC拓展</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall -g -o test.o -c test.c -m32</span><br></pre></td></tr></table></figure>
+
+<p><code>-Wall</code>用于启用所有的警告</p>
+<p><code>-g</code>在编译时保存调试信息</p>
+<p><code>-o filename</code>指定输出文件**[!]**</p>
+<p><code>-c filename</code>仅仅编译源文件但是不进行链接**[!]**</p>
+<p><code>-m32</code>选择生成i386架构指令（也成为x86，目前大部分Linux都是这个）而非x86_64架构指令**[!]**</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc test.o -o test -m32</span><br></pre></td></tr></table></figure>
+
+<p>上面的指令执行过后会自动执行进行链接。</p>
+<p>当然完全可以一步到位</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc test.c -o test -m32</span><br></pre></td></tr></table></figure>
+
+
 
 <h5 id="ASM相关"><a href="#ASM相关" class="headerlink" title="ASM相关"></a>ASM相关</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将汇编代码转换成目标文件（机器语言）</span></span><br><span class="line">nasm -f elf64 -o output.o input.asm</span><br><span class="line">nasm -f elf64 -o flag.o flag.asm</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">链接目标文件,将目标文件与任何必要的库文件链接</span></span><br><span class="line">ld -s -o flag flag.o</span><br></pre></td></tr></table></figure>
 
