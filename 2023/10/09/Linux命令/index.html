@@ -111,7 +111,7 @@
           
             <h2 class="last-time">
               <span>最后更新于</span>
-              <time  class="article-updated" datetime="2023-10-18T10:29:44.297Z" itemprop="dateUpdated">2023-10-18</time>
+              <time  class="article-updated" datetime="2023-10-19T07:52:03.621Z" itemprop="dateUpdated">2023-10-19</time>
             </h2>
           
           
@@ -158,7 +158,12 @@
 
 <h5 id="磁盘空间查看"><a href="#磁盘空间查看" class="headerlink" title="磁盘空间查看"></a>磁盘空间查看</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br></pre></td></tr></table></figure>
 
-<h4 id="gdb命令"><a href="#gdb命令" class="headerlink" title="gdb命令"></a>gdb命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Show all the <span class="built_in">functions</span></span></span><br><span class="line">info func</span><br></pre></td></tr></table></figure>
+<h5 id="Linux中的-符号"><a href="#Linux中的-符号" class="headerlink" title="Linux中的&amp;符号"></a>Linux中的&amp;符号</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">&amp; 用于后台运行</span></span><br><span class="line">ls &amp;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">&amp; 用于指定是输入流、输出流、还是错误输出流</span></span><br><span class="line">ls &gt;</span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&amp;2 意思是把标准输出重定向到标准错误.</span></span><br><span class="line"><span class="meta prompt_">1&gt;</span><span class="language-bash">&amp;2 意思是把标准输出重定向到标准错误.</span></span><br><span class="line"><span class="meta prompt_">2&gt;</span><span class="language-bash">&amp;1 意思是把标准错误输出重定向到标准输出。</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="查看运行的进程"><a href="#查看运行的进程" class="headerlink" title="查看运行的进程"></a>查看运行的进程</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">运行的进程查看</span></span><br><span class="line">ps -ef | grep proccess_name</span><br></pre></td></tr></table></figure>
+
+<h5 id="伪设备——-dev-null"><a href="#伪设备——-dev-null" class="headerlink" title="伪设备——&#x2F;dev&#x2F;null"></a>伪设备——&#x2F;dev&#x2F;null</h5><p>伪设备是指一类没有物理设备对应的一类设备节点，伪设备可以为系统的一些操作提供支持。常见的一些伪设备：</p>
+<figure class="highlight plaintext"><figcaption><span>- 接受并丢弃所有输入; 不产生输出（总是在读取时返回文件结束指示）</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```/dev/zero``` - 接受并丢弃所有输入; 产生连续的NUL（零值）字节流</span><br><span class="line"></span><br><span class="line">```/dev/full``` - 读取时产生连续的NUL（零值）字节流，并在写入时返回“磁盘已满”消息</span><br><span class="line"></span><br><span class="line">```/dev/random```和```/dev/urandom```-它们产生的一个可变长度的数据流的伪随机数。</span><br><span class="line"></span><br><span class="line">#### gdb命令</span><br><span class="line"></span><br><span class="line">```shell</span><br><span class="line"># Show all the functions</span><br><span class="line">info func</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Set A Brekpoint</span></span><br><span class="line">break main</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Show All Break</span></span><br><span class="line">infp breakpoints</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Delete All BreakPoint</span></span><br><span class="line">delete</span><br></pre></td></tr></table></figure>
 
@@ -167,6 +172,8 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Get Value OF Registers</span></span><br><span class="line">info registers eax</span><br><span class="line">info registers</span><br></pre></td></tr></table></figure>
 
 <h4 id="Objdump"><a href="#Objdump" class="headerlink" title="Objdump"></a>Objdump</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -d your_program &gt; assembly_code.txt</span><br></pre></td></tr></table></figure>
+
+<h4 id="没有任何回显的命令执行"><a href="#没有任何回显的命令执行" class="headerlink" title="没有任何回显的命令执行"></a>没有任何回显的命令执行</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">没有回显的命令执行</span></span><br><span class="line">command 2&gt;&amp;1 &gt;/dev/null</span><br><span class="line">ls &gt;/dev/null 2&gt;&amp;1</span><br><span class="line">ls 2&gt;&amp;1 &gt;/dev/null</span><br></pre></td></tr></table></figure>
 
 
       </section>
