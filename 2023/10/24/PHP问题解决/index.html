@@ -22,7 +22,7 @@
 
   
 
-  <title>Linux命令 | Baron&#39;s Blog</title>
+  <title>PHP问题解决 | Baron&#39;s Blog</title>
 
   
 
@@ -102,17 +102,12 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Linux命令</h1>
+          <h1 class="title-wrap">PHP问题解决</h1>
           <h2 class="title-sub-wrap">
             <strong>Baron</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2023-10-09T07:53:21.000Z" itemprop="datePublished">2023-10-09</time>
+            <time  class="article-date" datetime="2023-10-24T13:26:16.000Z" itemprop="datePublished">2023-10-24</time>
           </h2>
-          
-            <h2 class="last-time">
-              <span>最后更新于</span>
-              <time  class="article-updated" datetime="2023-10-19T12:36:11.820Z" itemprop="dateUpdated">2023-10-19</time>
-            </h2>
           
           
           <ul class="wrap-list dark">
@@ -120,7 +115,7 @@
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/Linux%E5%9F%BA%E7%A1%80/">🏷️ Linux基础</a></li>
+    <li><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">🏷️ 网络安全</a></li>
   
 </ul>
         </div>
@@ -144,37 +139,24 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="Linux命令"><a href="#Linux命令" class="headerlink" title="Linux命令"></a>Linux命令</h1><h4 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">File Download</span></span><br><span class="line">wget -O filename url</span><br><span class="line">wget -O Welcome_to_Ctfshow.asm https://ctf.show/files/Welcome_to_CTFshow.asm</span><br></pre></td></tr></table></figure>
+        <h1 id="PHP的一些问题解决"><a href="#PHP的一些问题解决" class="headerlink" title="PHP的一些问题解决"></a>PHP的一些问题解决</h1><h4 id="POST请求中的解释"><a href="#POST请求中的解释" class="headerlink" title="POST请求中的解释"></a>POST请求中的解释</h4><p>POST的enctype为 application&#x2F;x-www-form-urlencoded。</p>
+<p><img src="/../images/image-20231024212802008.png" alt="image-20231024212802008"></p>
+<p>关于这个的逻辑上的理解，这个规定：我此处的POST报文中的信息，经过了url编码。</p>
+<p>意思也就是说，我的报文里面的信息有url编码。</p>
+<p>若后端接收这个信息的话，那么后端需要首先把报文中的信息url解码后，再提取信息。</p>
+<h4 id="PHP中的urlencode-函数"><a href="#PHP中的urlencode-函数" class="headerlink" title="PHP中的urlencode()函数"></a>PHP中的urlencode()函数</h4><p>人傻了，这个点没想到自己想了一个小时，都没有想明白，现在才发现自己很蠢。看如下代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$d</span> = <span class="title function_ invoke__">urldecode</span>(<span class="string">&quot;%13%19%13%14%05%60&quot;</span>|<span class="string">&quot;%60%60%60%60%60%0d&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$d</span>);</span><br><span class="line"><span class="variable">$dd</span> = <span class="title function_ invoke__">urldecode</span>(<span class="string">&quot;%13%19%13%14%05%60&quot;</span>)|<span class="title function_ invoke__">urldecode</span>(<span class="string">&quot;%60%60%60%60%60%0d&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$dd</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Rename File or Move</span></span><br><span class="line">mv source_file destination_file</span><br><span class="line">mv nice welcome_to_ctfshow.asm</span><br></pre></td></tr></table></figure>
+<p>请问这俩输出有什么区别吗？还是说内容就应该一样？</p>
+<p>显然这俩结果不应该一样，但是又可能一样，问题就出在对代码的理解上了。</p>
+<p><code>$d</code>的理解：拆分一下那个运算过程，每个字符为一个单位，<code>&#39;%&#39; | &#39;%&#39;,&#39;1&#39; | &#39;6&#39;</code>一个字符一个字符的ASCII的值去或运算，然后得到的字符再url解码，因此会进行 <strong>18次</strong> 或运算。</p>
+<p><code>$dd</code>的理解：先url解码，因此这里就变成了，3个字符为一个单位url解码得到一个字符，然后再以字符的方式，按照ASCII码每一个位置对应上再或运算，因此会进行 <strong>6次</strong> 或运算。这个运算过程也是，urlencode的数据传递过后，后端自动处理的过程。</p>
+<p>因此得到结果：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span>(<span class="number">8</span>) <span class="string">&quot;syste%6t&quot;</span></span><br><span class="line"><span class="keyword">string</span>(<span class="number">6</span>) <span class="string">&quot;system&quot;</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">History Command filter</span></span><br><span class="line">history | grep string_filter</span><br><span class="line">history | grep iptables</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Printf</span></span><br><span class="line">printf “%d\n” 0x36d	</span><br></pre></td></tr></table></figure>
-
-<h5 id="重定向命令"><a href="#重定向命令" class="headerlink" title="重定向命令"></a>重定向命令</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Append Write</span></span><br><span class="line">echo &#x27;add a test&#x27; &gt;&gt; filename</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Overwrite</span></span><br><span class="line">echo &#x27;Overrite test&#x27; &gt; filename</span><br></pre></td></tr></table></figure>
-
-<h5 id="搜索文件命令"><a href="#搜索文件命令" class="headerlink" title="搜索文件命令"></a>搜索文件命令</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">find 命令</span></span><br><span class="line">find &lt;directory&gt; -name filename</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">locate 命令</span></span><br><span class="line">locate filename</span><br></pre></td></tr></table></figure>
-
-<h5 id="磁盘空间查看"><a href="#磁盘空间查看" class="headerlink" title="磁盘空间查看"></a>磁盘空间查看</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br></pre></td></tr></table></figure>
-
-<h5 id="Linux中的-符号"><a href="#Linux中的-符号" class="headerlink" title="Linux中的&amp;符号"></a>Linux中的&amp;符号</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">&amp; 用于后台运行</span></span><br><span class="line">ls &amp;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">&amp; 用于指定是输入流、输出流、还是错误输出流</span></span><br><span class="line">ls &gt;</span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&amp;2 意思是把标准输出重定向到标准错误.</span></span><br><span class="line"><span class="meta prompt_">1&gt;</span><span class="language-bash">&amp;2 意思是把标准输出重定向到标准错误.</span></span><br><span class="line"><span class="meta prompt_">2&gt;</span><span class="language-bash">&amp;1 意思是把标准错误输出重定向到标准输出。</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="查看运行的进程"><a href="#查看运行的进程" class="headerlink" title="查看运行的进程"></a>查看运行的进程</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">运行的进程查看</span></span><br><span class="line">ps -ef | grep proccess_name</span><br></pre></td></tr></table></figure>
-
-<h5 id="伪设备——-dev-null"><a href="#伪设备——-dev-null" class="headerlink" title="伪设备——&#x2F;dev&#x2F;null"></a>伪设备——&#x2F;dev&#x2F;null</h5><p>伪设备是指一类没有物理设备对应的一类设备节点，伪设备可以为系统的一些操作提供支持。常见的一些伪设备：</p>
-<figure class="highlight plaintext"><figcaption><span>- 接受并丢弃所有输入; 不产生输出（总是在读取时返回文件结束指示）</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```/dev/zero``` - 接受并丢弃所有输入; 产生连续的NUL（零值）字节流</span><br><span class="line"></span><br><span class="line">```/dev/full``` - 读取时产生连续的NUL（零值）字节流，并在写入时返回“磁盘已满”消息</span><br><span class="line"></span><br><span class="line">```/dev/random```和```/dev/urandom```-它们产生的一个可变长度的数据流的伪随机数。</span><br><span class="line"></span><br><span class="line">#### gdb命令</span><br><span class="line"></span><br><span class="line">```shell</span><br><span class="line"># Show all the functions</span><br><span class="line">info func</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Set A Brekpoint</span></span><br><span class="line">break main</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Show All Break</span></span><br><span class="line">infp breakpoints</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Delete All BreakPoint</span></span><br><span class="line">delete</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Display The value of Certain Address</span></span><br><span class="line">x/s address</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Get Value OF Registers</span></span><br><span class="line">info registers eax</span><br><span class="line">info registers</span><br></pre></td></tr></table></figure>
-
-<h4 id="Objdump"><a href="#Objdump" class="headerlink" title="Objdump"></a>Objdump</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -d your_program &gt; assembly_code.txt</span><br></pre></td></tr></table></figure>
-
-<h4 id="没有任何回显的命令执行"><a href="#没有任何回显的命令执行" class="headerlink" title="没有任何回显的命令执行"></a>没有任何回显的命令执行</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">没有回显的命令执行</span></span><br><span class="line">command 2&gt;&amp;1 &gt;/dev/null</span><br><span class="line">ls &gt;/dev/null 2&gt;&amp;1</span><br><span class="line">ls 2&gt;&amp;1 &gt;/dev/null</span><br></pre></td></tr></table></figure>
-
+<p>注意0也有自己的ASCII值，不为0哦，<code>%30</code>, <code>0011 0000</code></p>
+<p>学后练习：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$d</span> = <span class="title function_ invoke__">urldecode</span>(<span class="string">&quot;60&quot;</span>|<span class="string">&quot;0d&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$d</span>);</span><br><span class="line"><span class="variable">$dd</span> = <span class="title function_ invoke__">urldecode</span>(<span class="string">&quot;60&quot;</span>)|<span class="title function_ invoke__">urldecode</span>(<span class="string">&quot;0d&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$dd</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
       </section>
 
@@ -182,28 +164,14 @@
       
         <nav class="article-nav">
           
-            <div class="article-nav-item layout-padding">
-  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
-    
-    <div class="card-text">
-      
-        <a href="/2023/10/12/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-MAC%E5%9C%B0%E5%9D%80/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">计算机网络-基础知识-MAC地址</h2>
-        </a>
-      
-      <div class="card-text--row">Newer</div>
-    </div>
-  </article>
-</div>
-          
           
             <div class="article-nav-item layout-padding">
   <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
     
     <div class="card-text">
       
-        <a href="/2023/10/07/PWN-%E5%88%9D%E5%AD%A6/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">PWN-初学</h2>
+        <a href="/2023/10/21/%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%9A%84%E5%90%84%E7%A7%8D%E8%BF%87%E6%BB%A4/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">代码执行的各种过滤绕过</h2>
         </a>
       
       <div class="card-text--row">Older</div>
