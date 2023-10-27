@@ -22,7 +22,7 @@
 
   
 
-  <title>文件整理 | Baron&#39;s Blog</title>
+  <title>代码执行的各种过滤绕过-下篇 | Baron&#39;s Blog</title>
 
   
 
@@ -102,11 +102,11 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">文件整理</h1>
+          <h1 class="title-wrap">代码执行的各种过滤绕过-下篇</h1>
           <h2 class="title-sub-wrap">
             <strong>Baron</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2023-10-03T05:34:18.119Z" itemprop="datePublished">2023-10-03</time>
+            <time  class="article-date" datetime="2023-10-24T14:25:01.000Z" itemprop="datePublished">2023-10-24</time>
           </h2>
           
           
@@ -115,7 +115,7 @@
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/Misc/">🏷️ Misc</a></li>
+    <li><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">🏷️ 网络安全</a></li>
   
 </ul>
         </div>
@@ -139,13 +139,21 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="文件整理"><a href="#文件整理" class="headerlink" title="文件整理"></a>文件整理</h2><p>虚拟机合集专用</p>
-<p>CTF比赛专用</p>
-<p>渗透测试专用</p>
-<p>项目文件专用</p>
-<p>课程文件专用</p>
-<p>社工字典专用</p>
-<p>语言环境专用</p>
+        <h1 id="代码执行的各种过滤绕过-下篇"><a href="#代码执行的各种过滤绕过-下篇" class="headerlink" title="代码执行的各种过滤绕过-下篇"></a>代码执行的各种过滤绕过-下篇</h1><h4 id="php特性"><a href="#php特性" class="headerlink" title="php特性"></a>php特性</h4><h5 id="0x01-赋值"><a href="#0x01-赋值" class="headerlink" title="0x01&gt; 赋值"></a>0x01&gt; 赋值</h5><p>大概就是，赋值也可以执行system函数【一个意识叭，python的system函数在赋值的时候也可以执行】。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">windows测试命令</span></span><br><span class="line">php -r &quot;$a=(&#x27;system&#x27;)(&#x27;dir&#x27;);&quot;</span><br><span class="line">php -r &quot;(&#x27;system&#x27;)(&#x27;dir&#x27;);&quot;</span><br><span class="line">php -r &quot;system(&#x27;dir&#x27;);&quot;</span><br><span class="line">php -r &quot;system(dir);&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">system执行成功则返回命令输出的最后一行</span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash"><span class="built_in">dd</span> = (urldecode(<span class="string">&#x27;%13%19%13%14%05%60&#x27;</span>)|urldecode(<span class="string">&#x27;%60%60%60%60%60%0d&#x27;</span>))(urldecode(<span class="string">&#x27;%04%09%12&#x27;</span>)|urldecode(<span class="string">&#x27;%60%60%60&#x27;</span>));</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="0x02-单引号双引号"><a href="#0x02-单引号双引号" class="headerlink" title="0x02&gt; 单引号双引号"></a>0x02&gt; 单引号双引号</h5><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$foo</span> = <span class="number">2</span>; </span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;foo is <span class="subst">$foo</span>&quot;</span>; <span class="comment">// 打印结果: foo is 2 </span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;foo is $foo&#x27;</span>; <span class="comment">// 打印结果: foo is $foo </span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;foo is <span class="subst">$foo</span>\n&quot;</span>; <span class="comment">// 打印结果: foo is 2 (同时换行) </span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;foo is $foo\n&#x27;</span>; <span class="comment">// 打印结果: foo is $foo\n </span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 双引号串中直接包含字串变量,双引号串中的变量将被解释而且替换。</span></span><br><span class="line"><span class="comment">// 单引号串中的内容总被认为是普通字符。</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="绕过方法"><a href="#绕过方法" class="headerlink" title="绕过方法"></a>绕过方法</h4><h5 id="0x01-或运算"><a href="#0x01-或运算" class="headerlink" title="0x01&gt; 或运算"></a>0x01&gt; 或运算</h5><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="0x02-与运算"><a href="#0x02-与运算" class="headerlink" title="0x02&gt; 与运算"></a>0x02&gt; 与运算</h5><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="0x03-异或运算"><a href="#0x03-异或运算" class="headerlink" title="0x03&gt; 异或运算"></a>0x03&gt; 异或运算</h5><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
 
       </section>
 
@@ -158,8 +166,8 @@
     
     <div class="card-text">
       
-        <a href="/2023/10/04/Hexo%E7%BD%91%E9%A1%B5%E6%90%AD%E5%BB%BA/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Hexo网页搭建</h2>
+        <a href="/2023/10/26/%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%9A%84%E5%90%84%E7%A7%8D%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87-%E4%B8%AD%E7%AF%87/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">代码执行的各种过滤绕过-下篇</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -173,8 +181,8 @@
     
     <div class="card-text">
       
-        <a href="/2023/10/03/%E6%8E%A5%E5%8F%A3%E6%8A%93%E5%8F%96-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">接口抓取</h2>
+        <a href="/2023/10/24/PHP%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">PHP浅析</h2>
         </a>
       
       <div class="card-text--row">Older</div>

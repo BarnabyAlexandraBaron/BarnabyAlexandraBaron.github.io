@@ -22,7 +22,7 @@
 
   
 
-  <title>文件整理 | Baron&#39;s Blog</title>
+  <title>代码执行的各种过滤绕过-下篇 | Baron&#39;s Blog</title>
 
   
 
@@ -102,12 +102,17 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">文件整理</h1>
+          <h1 class="title-wrap">代码执行的各种过滤绕过-下篇</h1>
           <h2 class="title-sub-wrap">
             <strong>Baron</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2023-10-03T05:34:18.119Z" itemprop="datePublished">2023-10-03</time>
+            <time  class="article-date" datetime="2023-10-26T13:17:01.000Z" itemprop="datePublished">2023-10-26</time>
           </h2>
+          
+            <h2 class="last-time">
+              <span>最后更新于</span>
+              <time  class="article-updated" datetime="2023-10-27T08:25:18.516Z" itemprop="dateUpdated">2023-10-27</time>
+            </h2>
           
           
           <ul class="wrap-list dark">
@@ -115,7 +120,7 @@
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/Misc/">🏷️ Misc</a></li>
+    <li><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">🏷️ 网络安全</a></li>
   
 </ul>
         </div>
@@ -139,13 +144,78 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h2 id="文件整理"><a href="#文件整理" class="headerlink" title="文件整理"></a>文件整理</h2><p>虚拟机合集专用</p>
-<p>CTF比赛专用</p>
-<p>渗透测试专用</p>
-<p>项目文件专用</p>
-<p>课程文件专用</p>
-<p>社工字典专用</p>
-<p>语言环境专用</p>
+        <h1 id="代码执行的各种过滤绕过-中篇"><a href="#代码执行的各种过滤绕过-中篇" class="headerlink" title="代码执行的各种过滤绕过-中篇"></a>代码执行的各种过滤绕过-中篇</h1><h4 id="Linux-Bash-特性"><a href="#Linux-Bash-特性" class="headerlink" title="Linux Bash 特性"></a>Linux Bash 特性</h4><h5 id="命令中的逻辑运算"><a href="#命令中的逻辑运算" class="headerlink" title="命令中的逻辑运算"></a>命令中的逻辑运算</h5><p>全网唯一最最最最形象的解释~~不可能学不懂！</p>
+<p><strong>0x01&gt;&amp;&amp;</strong> 操作符-多米诺运算符</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command1 &amp;&amp; command2 &amp;&amp; command3 &amp;&amp; command4 &amp;&amp; command5</span><br></pre></td></tr></table></figure>
+
+<p>前一个执行成功后面的就执行，只要有一个执行失败，后面的都不执行；就像多米诺骨牌那样，第一个倒下后面的就有概率会接着倒下。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls &amp;&amp; ls &amp;&amp; badcommand &amp;&amp; ls &amp;&amp; ls &amp;&amp; ls &amp;&amp; ls &amp;&amp; ls &amp;&amp; ls</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20231026213411640.png" alt="image-20231026213411640"></p>
+<p><strong>0x02&gt;||</strong> 操作符-备用方案运算符 (备胎运算符)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command1 || command2 || command3 || command4 || command5</span><br></pre></td></tr></table></figure>
+
+<p>前一个执行成功后面的就不执行。可以形象的理解为备用方案，若第一个执行成功了，后面的备胎我都不要了，若第一个执行失败，依次考虑后面的备胎。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls || pwd || ll || pwd || ll</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20231026214154780.png" alt="image-20231026214154780"></p>
+<p><strong>练习：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls &amp;&amp; badcommand1 || badcommand2 &amp;&amp; ll</span><br><span class="line">ls &amp;&amp; pwd || badcommand &amp;&amp; ls</span><br></pre></td></tr></table></figure>
+
+
+
+<p>**0x03&gt;**定向符</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command &gt;/dev/null 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+
+
+<p>**0x05&gt;**问号</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tac f???.php</span><br></pre></td></tr></table></figure>
+
+
+
+<p>**0x06&gt;**环境变量</p>
+<p>${IFS}</p>
+<p>${PWD}</p>
+<p>${HOME}</p>
+<p>${USER}</p>
+<p>**0x07&gt;**切片取字符</p>
+<p>:用法</p>
+<p><img src="/../images/image-20231026220349356.png" alt="image-20231026220349356"></p>
+<p>cut用法</p>
+<p><img src="/../images/image-20231026220540054.png" alt="image-20231026220540054"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;PHP_EXTRA_CONFIGURE_ARGS:12:1&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>0x08&gt;文件的关键限制</p>
+<p>问号绕过:?</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tac&lt;f???????</span><br></pre></td></tr></table></figure>
+
+<p>‘’拼接“绕过：’’,””</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tac&lt;fla&quot;&quot;g.php</span><br><span class="line">tac&lt;fla&#x27;&#x27;g.php</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">grep$</span><span class="language-bash">&#123;IFS&#125;<span class="string">&quot;&quot;</span><span class="variable">$&#123;IFS&#125;</span>fl??????</span></span><br><span class="line"><span class="meta prompt_">grep$</span><span class="language-bash">&#123;IFS&#125;<span class="string">&quot;&quot;</span><span class="variable">$&#123;IFS&#125;</span>f???????</span></span><br><span class="line"><span class="meta prompt_">hexdump$</span><span class="language-bash">&#123;IFS&#125;-C<span class="variable">$&#123;IFS&#125;</span>fl??????</span></span><br><span class="line"><span class="meta prompt_">hexdump$</span><span class="language-bash">&#123;IFS&#125;-C<span class="variable">$&#123;IFS&#125;</span>fl??????</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p> <strong>0x07&gt;</strong> 变量</p>
+<p>变量定义</p>
+<p>a&#x3D;123;</p>
+<p>系统变量</p>
+<p>$HOME，${HOME}</p>
+<h5 id="杂"><a href="#杂" class="headerlink" title="杂"></a>杂</h5><p>替换空格</p>
+<p>GET:</p>
+<p>url编码类：%09，%20？？好像%26也可以？</p>
+<p>WEB框架语言类：php：</p>
+<p>系统环境变量类：${IFS},${PHP_EXTRA_CONFIGURE_ARGS:12:1}</p>
+<p>${HOSTNAME:12:1}${HOSTNAME:1:1}—–&gt;ls</p>
+<p>${PHP_EXTRA_CONFIGURE_ARGS}</p>
+<p>$HOME，$</p>
+<p>变量调用</p>
+<p>a&#x3D;123;echo $a;echo $a;</p>
 
       </section>
 
@@ -153,28 +223,14 @@
       
         <nav class="article-nav">
           
-            <div class="article-nav-item layout-padding">
-  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
-    
-    <div class="card-text">
-      
-        <a href="/2023/10/04/Hexo%E7%BD%91%E9%A1%B5%E6%90%AD%E5%BB%BA/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Hexo网页搭建</h2>
-        </a>
-      
-      <div class="card-text--row">Newer</div>
-    </div>
-  </article>
-</div>
-          
           
             <div class="article-nav-item layout-padding">
   <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
     
     <div class="card-text">
       
-        <a href="/2023/10/03/%E6%8E%A5%E5%8F%A3%E6%8A%93%E5%8F%96-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">接口抓取</h2>
+        <a href="/2023/10/24/%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%9A%84%E5%90%84%E7%A7%8D%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87-%E4%B8%8B%E7%AF%87/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">代码执行的各种过滤绕过-下篇</h2>
         </a>
       
       <div class="card-text--row">Older</div>
