@@ -22,7 +22,7 @@
 
   
 
-  <title>Hexo网页搭建 | Baron&#39;s Blog</title>
+  <title>命令执行的绕过-上篇 | Baron&#39;s Blog</title>
 
   
 
@@ -102,11 +102,11 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Hexo网页搭建</h1>
+          <h1 class="title-wrap">命令执行的绕过-上篇</h1>
           <h2 class="title-sub-wrap">
             <strong>Baron</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2023-10-04T06:00:20.000Z" itemprop="datePublished">2023-10-04</time>
+            <time  class="article-date" datetime="2023-10-27T16:45:51.000Z" itemprop="datePublished">2023-10-28</time>
           </h2>
           
           
@@ -115,7 +115,7 @@
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/%E7%BD%91%E9%A1%B5%E5%BC%80%E5%8F%91/">🏷️ 网页开发</a></li>
+    <li><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">🏷️ 网络安全</a></li>
   
 </ul>
         </div>
@@ -139,26 +139,14 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="Hexo网页搭建"><a href="#Hexo网页搭建" class="headerlink" title="Hexo网页搭建"></a>Hexo网页搭建</h1><h4 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 git</span></span><br><span class="line">sudo apt-get install git</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 nodejs</span></span><br><span class="line">sudo apt-get install nodejs</span><br><span class="line">sudo apt-get install npm</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 hexo</span></span><br><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+        <h1 id="命令执行的绕过-上篇"><a href="#命令执行的绕过-上篇" class="headerlink" title="命令执行的绕过-上篇"></a>命令执行的绕过-上篇</h1><p>前景提要：我们需要执行哪些命令</p>
+<h4 id="命令篇"><a href="#命令篇" class="headerlink" title="命令篇"></a>命令篇</h4><h5 id="查看文件命令"><a href="#查看文件命令" class="headerlink" title="查看文件命令"></a>查看文件命令</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">cat 		&lt;filename&gt;</span><br><span class="line">tac 		&lt;filename&gt;</span><br><span class="line">nl 			&lt;filename&gt;</span><br><span class="line">uniq 		&lt;filename&gt;</span><br><span class="line">hexdump -C 	&lt;filename&gt;</span><br><span class="line">rev			&lt;filename&gt;</span><br><span class="line">head 		&lt;filename&gt;</span><br><span class="line">tail 		&lt;filename&gt;</span><br><span class="line">more		&lt;filename&gt;</span><br><span class="line">less		&lt;filename&gt;</span><br><span class="line">fold		&lt;filename&gt;</span><br><span class="line">strins		&lt;filename&gt;</span><br><span class="line">col			&lt;filename&gt;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">环境验证</span></span><br><span class="line">git -v</span><br><span class="line">node -v</span><br><span class="line">npm -v</span><br><span class="line">hexo -v</span><br></pre></td></tr></table></figure>
-
-<h4 id="网页搭建一条龙"><a href="#网页搭建一条龙" class="headerlink" title="网页搭建一条龙"></a>网页搭建一条龙</h4><h5 id="网页初始化"><a href="#网页初始化" class="headerlink" title="网页初始化"></a>网页初始化</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo init myblog # hexo网页生成初始化 会在命令执行的当前目录生成一个 myblog 文件夹 </span><br><span class="line">hexo g # 生成静态文件</span><br></pre></td></tr></table></figure>
-
-<p>生成的文件目录</p>
-<p><img src="/../images/image-20231004141416658.png" alt="image-20231004141416658"></p>
-<h5 id="网页客制化"><a href="#网页客制化" class="headerlink" title="网页客制化"></a>网页客制化</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在themes文件夹里面 git <span class="built_in">clone</span> 主题（主题详见：https://hexo.io/themes/）</span></span><br><span class="line">git clone https://github.com/sanjinhub/hexo-theme-geek.git 文件名 </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置修改 _config.yml 设置主题 为 文件名</span></span><br><span class="line">theme: 文件名</span><br></pre></td></tr></table></figure>
-
-<p><img src="/../images/image-20231004141853724.png" alt="image-20231004141853724"></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">客制化网页信息：</span><br><span class="line">i.  修改myblog<span class="operator">/</span>themes<span class="operator">/</span>主题名称<span class="operator">/</span>_config.yml </span><br><span class="line">ii. 修改myblog<span class="operator">/</span>_config.yml</span><br></pre></td></tr></table></figure>
-
-<h4 id="网页部署"><a href="#网页部署" class="headerlink" title="网页部署"></a>网页部署</h4><h5 id="写博客"><a href="#写博客" class="headerlink" title="写博客"></a>写博客</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># myblog目录下</span><br><span class="line">hexo <span class="keyword">new</span> 文章名称</span><br></pre></td></tr></table></figure>
-
-<h5 id="生成静态网页"><a href="#生成静态网页" class="headerlink" title="生成静态网页"></a>生成静态网页</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">myblog目录下</span></span><br><span class="line">hexo clean &amp;&amp; hexo g</span><br></pre></td></tr></table></figure>
-
-<h5 id="静态网页部署到Github"><a href="#静态网页部署到Github" class="headerlink" title="静态网页部署到Github"></a>静态网页部署到Github</h5><p>i.  github里面创建一个 <code>github用户名.github.io</code> 的<code>repository </code>.</p>
-<p>ii. 将<code>myblog/public</code>目录中的所有文件上传到<code>repository</code>中即可（这是手动上传的方法）</p>
-<p>iii. 自动化上传git，请参考文档 <a target="_blank" rel="noopener" href="https://hexo.io/docs/github-pages">GitHub Pages | Hexo</a></p>
+<h6 id="绕过方式："><a href="#绕过方式：" class="headerlink" title="绕过方式："></a>绕过方式：</h6><p>0x01&gt;换命令名称</p>
+<p>0x02&gt;加引号</p>
+<p>0x03&gt;&#x2F;bin&#x2F;命令名称—&gt;&#x2F;???&#x2F;????????</p>
+<p>0x04&gt;不直接查看，考虑压缩写入文件？然后单独访问</p>
+<p>0x05&gt;考虑运算？</p>
 
       </section>
 
@@ -166,28 +154,14 @@
       
         <nav class="article-nav">
           
-            <div class="article-nav-item layout-padding">
-  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
-    
-    <div class="card-text">
-      
-        <a href="/2023/10/06/%E5%AD%A6%E4%B9%A0%E8%A7%84%E5%88%92/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">学习规划</h2>
-        </a>
-      
-      <div class="card-text--row">Newer</div>
-    </div>
-  </article>
-</div>
-          
           
             <div class="article-nav-item layout-padding">
   <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
     
     <div class="card-text">
       
-        <a href="/2023/10/03/%E6%8E%A5%E5%8F%A3%E6%8A%93%E5%8F%96-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">接口抓取</h2>
+        <a href="/2023/10/26/%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%9A%84%E5%90%84%E7%A7%8D%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87-%E4%B8%AD%E7%AF%87/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">代码执行的各种过滤绕过-中篇</h2>
         </a>
       
       <div class="card-text--row">Older</div>
