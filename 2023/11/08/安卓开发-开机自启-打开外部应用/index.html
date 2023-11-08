@@ -22,7 +22,7 @@
 
   
 
-  <title>接口抓取 | Baron&#39;s Blog</title>
+  <title>安卓开发-开机自启+打开外部应用+全屏无状态栏+延时执行 | Baron&#39;s Blog</title>
 
   
 
@@ -102,11 +102,11 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">接口抓取</h1>
+          <h1 class="title-wrap">安卓开发-开机自启+打开外部应用+全屏无状态栏+延时执行</h1>
           <h2 class="title-sub-wrap">
             <strong>Baron</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2023-10-03T05:34:18.119Z" itemprop="datePublished">2023-10-03</time>
+            <time  class="article-date" datetime="2023-11-08T14:23:40.000Z" itemprop="datePublished">2023-11-08</time>
           </h2>
           
           
@@ -115,7 +115,7 @@
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">🏷️ 网络安全</a></li>
+    <li><a href="/tags/%E5%AE%89%E5%8D%93%E5%BC%80%E5%8F%91/">🏷️ 安卓开发</a></li>
   
 </ul>
         </div>
@@ -139,13 +139,41 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="接口抓取-持续更新"><a href="#接口抓取-持续更新" class="headerlink" title="接口抓取-持续更新"></a>接口抓取-持续更新</h1><h4 id="U净用户Token简单获取"><a href="#U净用户Token简单获取" class="headerlink" title="U净用户Token简单获取"></a>U净用户Token简单获取</h4><h5 id="main"><a href="#main" class="headerlink" title="main:"></a>main:</h5><p>一句话带过 : 后台一直代理抓包安卓的数据包 , 学会去看BP中的HTTP history , 在里面筛选获得token的数据包.( 核心: 学会使用 filter 筛选出核心的数据包 , 即可获得我们想要的接口)</p>
-<p><img src="/../images/image-20231003015220019.png" alt="image-20231003015220019"></p>
-<h5 id="result"><a href="#result" class="headerlink" title="result:"></a>result:</h5><p><img src="/../images/image-20231003014630858.png" alt="image-20231003014630858"></p>
-<p>利用BP的gadget提取一下数据包为curl的shell命令,方便以后调用.</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">发验证码的 API</span><br><span class="line">curl -i -s -k -X $&#x27;GET&#x27; \</span><br><span class="line">    -H $&#x27;Host: phoenix.ujing.online&#x27; -H $&#x27;X-Mobile-Brand: OPPO&#x27; -H $&#x27;X-Mobile-Id: &#x27; -H $&#x27;X-App-Code: ZA&#x27; -H $&#x27;Content-Type: application/json&#x27; -H $&#x27;X-App-Version: 2.4.3&#x27; -H $&#x27;X-Mobile-Model: PCLM10&#x27; -H $&#x27;Accept-Encoding: gzip, deflate&#x27; -H $&#x27;User-Agent: okhttp/4.3.1&#x27; -H $&#x27;Connection: close&#x27; \</span><br><span class="line">    -b $&#x27;acw_tc=15eff1b2d809942cc3b6116e3a1f4431205aaa72c79f82390f77cab5e53d939f&#x27; \</span><br><span class="line">    $&#x27;https://phoenix.ujing.online/api/v1/captcha?mobile=电话号码&amp;type=1&amp;sessionId=AFS_SWITCH_OFF&amp;token=AFS_SWITCH_OFF&amp;sig=AFS_SWITCH_OFF&#x27;</span><br></pre></td></tr></table></figure>
+        <h1 id="安卓开发的小Tips"><a href="#安卓开发的小Tips" class="headerlink" title="安卓开发的小Tips"></a>安卓开发的小Tips</h1><h3 id="全屏无状态栏"><a href="#全屏无状态栏" class="headerlink" title="全屏无状态栏"></a>全屏无状态栏</h3><p>自定义一个theme的style，然后调用即可~</p>
+<h5 id="定义样式"><a href="#定义样式" class="headerlink" title="定义样式"></a>定义样式</h5><p>修改文件 <code>res\values\themes\themes.xml</code>，修改位置<code>resources标签的内部一级标签</code></p>
+<p>style中自定义的内容如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">&quot;AppTheme&quot;</span> <span class="attr">parent</span>=<span class="string">&quot;Theme.AppCompat.Light.NoActionBar&quot;</span>&gt;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">    <span class="comment">&lt;!-- All customizations that are NOT specific to a particular API-level can go here. --&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="comment">&lt;!-- 隐藏状态栏 --&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;android:windowFullscreen&quot;</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="comment">&lt;!-- 隐藏标题栏 --&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;android:windowNoTitle&quot;</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">验证验证码&amp;获取token的 API</span><br><span class="line">curl -i -s -k -X $&#x27;POST&#x27; \</span><br><span class="line">    -H $&#x27;Host: phoenix.ujing.online&#x27; -H $&#x27;X-Mobile-Brand: OPPO&#x27; -H $&#x27;X-Mobile-Id: &#x27; -H $&#x27;X-App-Code: ZA&#x27; -H $&#x27;X-App-Version: 2.4.3&#x27; -H $&#x27;X-Mobile-Model: PCLM10&#x27; -H $&#x27;Content-Type: application/json; charset=utf-8&#x27; -H $&#x27;Content-Length: 41&#x27; -H $&#x27;Accept-Encoding: gzip, deflate&#x27; -H $&#x27;User-Agent: okhttp/4.3.1&#x27; -H $&#x27;Connection: close&#x27; \</span><br><span class="line">    -b $&#x27;acw_tc=15eff1b2d809942cc3b6116e3a1f4431205aaa72c79f82390f77cab5e53d939f&#x27; \</span><br><span class="line">    --data-binary $&#x27;&#123;\&quot;captcha\&quot;:\&quot;验证码\&quot;,\&quot;mobile\&quot;:\&quot;电话号码\&quot;&#125;&#x27; \</span><br><span class="line">    $&#x27;https://phoenix.ujing.online/api/v1/login&#x27;</span><br></pre></td></tr></table></figure>
+<h5 id="调用样式"><a href="#调用样式" class="headerlink" title="调用样式"></a>调用样式</h5><p>可以在需要修改的layout中调用，也可以在注册清单中调用（这个方式可以让全局app的界面都调用此样式）</p>
+<p>修改文件<code>AndroidManifest.xml</code>，修改的位置<code>manifest标签-&gt;application标签的内部一级标签</code></p>
+<p>修改的内容如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android:theme=&quot;@style/AppTheme&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="打开外部应用"><a href="#打开外部应用" class="headerlink" title="打开外部应用"></a>打开外部应用</h3><p>写一个方法然后调用~</p>
+<h5 id="定义打开外部应用的函数"><a href="#定义打开外部应用的函数" class="headerlink" title="定义打开外部应用的函数"></a>定义打开外部应用的函数</h5><p>修改的文件<code>活动对应的class文件即可，比如：MainActivity.class</code></p>
+<p>修改的位置<code>与onCreate()函数同级</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">ChangeApp</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">Intent</span> <span class="variable">intent</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Intent</span>(Intent.ACTION_MAIN);</span><br><span class="line">    <span class="type">ComponentName</span> <span class="variable">componentName</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ComponentName</span>(<span class="string">&quot;包名&quot;</span>,<span class="string">&quot;包名.活动名称&quot;</span>);</span><br><span class="line">    intent.setComponent(componentName);</span><br><span class="line">    startActivity(intent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="调用函数"><a href="#调用函数" class="headerlink" title="调用函数"></a>调用函数</h5><p>写到<code>onCreate()</code>函数内部即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ChangeApp();</span><br></pre></td></tr></table></figure>
+
+<h3 id="延时执行"><a href="#延时执行" class="headerlink" title="延时执行"></a>延时执行</h3><p>延时执行函数（省略调用方法&amp;修改的位置）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> android.os.Handler;</span><br><span class="line"><span class="comment">// 创建一个 Handler 对象</span></span><br><span class="line"><span class="type">Handler</span> <span class="variable">handler</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Handler</span>();</span><br><span class="line"><span class="comment">// 延迟3秒后执行 ChangeApp 方法</span></span><br><span class="line">handler.postDelayed(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">ChangeApp();</span><br><span class="line">&#125;</span><br><span class="line">&#125;, <span class="number">3000</span>); <span class="comment">// 3000 毫秒等于 3 秒</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="开机自启"><a href="#开机自启" class="headerlink" title="开机自启"></a>开机自启</h3><h5 id="开启权限"><a href="#开启权限" class="headerlink" title="开启权限"></a>开启权限</h5><p>修改位置<code>manifest标签中</code></p>
+<p>修改清单文件添加权限</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.RECEIVE_BOOT_COMPLETED&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.SYSTEM_ALERT_WINDOW&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="创建方法（服务）"><a href="#创建方法（服务）" class="headerlink" title="创建方法（服务）"></a>创建方法（服务）</h5><p>创建开机自启服务监听服务的java class文件 <code>StartActivityOnBootReceiver.class</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> android.content.BroadcastReceiver;</span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.content.Intent;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StartActivityOnBootReceiver</span> <span class="keyword">extends</span> <span class="title class_">BroadcastReceiver</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onReceive</span><span class="params">(Context context, Intent intent)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) &#123;</span><br><span class="line">            <span class="type">Intent</span> <span class="variable">i</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Intent</span>(context, MainActivity.class);<span class="comment">//需要开机跳转到的活动界面</span></span><br><span class="line">            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line">            context.startActivity(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="注册服务"><a href="#注册服务" class="headerlink" title="注册服务"></a>注册服务</h5><p>修改位置<code>manifest--&gt;application中</code></p>
+<p>清单文件中注册这个服务</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">receiver</span> <span class="attr">android:name</span>=<span class="string">&quot;.StartActivityOnBootReceiver&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:enabled</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span> <span class="attr">android:priority</span>=<span class="string">&quot;1000&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.BOOT_COMPLETED&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.QUICKBOOT_POWERON&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="修改活动类型"><a href="#修改活动类型" class="headerlink" title="修改活动类型"></a>修改活动类型</h5><p>修改位置<code>manifest--&gt;application--&gt;activity--&gt;intent-filter</code></p>
+<p>需要自启的界面（如：MainActivity）添加Intent类型为HOME&amp;DEFAULT（作为桌面LAUNCHER启动）</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.HOME&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.DEFAULT&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 
 
       </section>
@@ -154,28 +182,14 @@
       
         <nav class="article-nav">
           
-            <div class="article-nav-item layout-padding">
-  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
-    
-    <div class="card-text">
-      
-        <a href="/2023/10/04/Hexo%E7%BD%91%E9%A1%B5%E6%90%AD%E5%BB%BA/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Hexo网页搭建</h2>
-        </a>
-      
-      <div class="card-text--row">Newer</div>
-    </div>
-  </article>
-</div>
-          
           
             <div class="article-nav-item layout-padding">
   <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
     
     <div class="card-text">
       
-        <a href="/2023/10/03/%E6%96%87%E4%BB%B6%E6%95%B4%E7%90%86/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">文件整理</h2>
+        <a href="/2023/10/29/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%9A%84%E7%BB%95%E8%BF%87-%E4%B8%8B%E7%AF%87/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">命令执行的绕过-下篇</h2>
         </a>
       
       <div class="card-text--row">Older</div>
