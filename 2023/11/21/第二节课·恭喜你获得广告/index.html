@@ -22,7 +22,7 @@
 
   
 
-  <title>安卓渗透测试环境搭建 | Baron&#39;s Blog</title>
+  <title>第二节课·恭喜你获得广告 | Baron&#39;s Blog</title>
 
   
 
@@ -102,17 +102,12 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">安卓渗透测试环境搭建</h1>
+          <h1 class="title-wrap">第二节课·恭喜你获得广告</h1>
           <h2 class="title-sub-wrap">
             <strong>Baron</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2023-10-03T05:34:18.118Z" itemprop="datePublished">2023-10-03</time>
+            <time  class="article-date" datetime="2023-11-21T07:37:26.000Z" itemprop="datePublished">2023-11-21</time>
           </h2>
-          
-            <h2 class="last-time">
-              <span>最后更新于</span>
-              <time  class="article-updated" datetime="2023-10-09T09:15:21.231Z" itemprop="dateUpdated">2023-10-09</time>
-            </h2>
           
           
           <ul class="wrap-list dark">
@@ -120,7 +115,7 @@
 </ul>
           <ul class="wrap-list dark">
   
-    <li><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">🏷️ 网络安全</a></li>
+    <li><a href="/tags/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/">🏷️ 安卓逆向</a></li>
   
 </ul>
         </div>
@@ -144,30 +139,88 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="安卓渗透测试环境搭建"><a href="#安卓渗透测试环境搭建" class="headerlink" title="安卓渗透测试环境搭建"></a>安卓渗透测试环境搭建</h1><h4 id="环境准备："><a href="#环境准备：" class="headerlink" title="环境准备："></a>环境准备：</h4><p>openssl：提供证书相关操作</p>
-<p>雷电模拟器：提供安卓环境</p>
-<p>Burpsuite：渗透测试抓包工具</p>
-<h4 id="环境搭建："><a href="#环境搭建：" class="headerlink" title="环境搭建："></a>环境搭建：</h4><h5 id="0x01-获得bp的证书"><a href="#0x01-获得bp的证书" class="headerlink" title="0x01 获得bp的证书"></a>0x01 获得bp的证书</h5><p>访问bp中设置的地址即可获得证书 cacert.der</p>
-<p><img src="/../images/image-20231003010552628.png" alt="image-20231003010552628"></p>
-<h5 id="0x02-转换证书为pem"><a href="#0x02-转换证书为pem" class="headerlink" title="0x02 转换证书为pem"></a>0x02 转换证书为pem</h5><p>计算hash值&amp;生成pem文件&amp;生成.0文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -inform der -in cacert.der -out cacert.pem</span><br><span class="line">生成pem文件</span><br><span class="line">openssl x509 -inform PEM -subject_hash_old -in cacert.pem</span><br><span class="line">第二条命令看得到的hash值，重命名pem文件为 得到的hash值.0</span><br></pre></td></tr></table></figure>
+        <h1 id="一、课程目标"><a href="#一、课程目标" class="headerlink" title="一、课程目标"></a>一、课程目标</h1><hr>
+<p>1.了解安卓四大组件、Activity生命周期<br>2.弹窗定位、去更新<br>3.广告分析与布局优化</p>
+<h1 id="二、工具"><a href="#二、工具" class="headerlink" title="二、工具"></a>二、工具</h1><hr>
+<p>1.教程Demo(更新)<br>2.MT管理器&#x2F;NP管理器<br>3.算法助手<br>4.雷电模拟器<br>5.开发助手</p>
+<h1 id="三、课程内容"><a href="#三、课程内容" class="headerlink" title="三、课程内容"></a>三、课程内容</h1><hr>
+<h2 id="1-广告类型"><a href="#1-广告类型" class="headerlink" title="1.广告类型"></a>1.广告类型</h2><p>① 启动广告</p>
+<p>② 弹窗&amp;更新广告</p>
+<p>③ 横幅广告</p>
+<h2 id="2-安卓四大组件"><a href="#2-安卓四大组件" class="headerlink" title="2.安卓四大组件"></a>2.安卓四大组件</h2><table>
+<thead>
+<tr>
+<th align="left">组件</th>
+<th align="right">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Activity(活动)</td>
+<td align="right">在应用中的一个Activity可以用来表示一个界面，意思可以理解为“活动”，即一个活动开始，代表 Activity组件启动，活动结束，代表一个Activity的生命周期结束。一个Android应用必须通过Activity来运行和启动，Activity的生命周期交给系统统一管理。</td>
+</tr>
+<tr>
+<td align="left">Service(服务)</td>
+<td align="right">Service它可以在后台执行长时间运行操作而没有用户界面的应用组件，不依赖任何用户界面，例如后台播放音乐，后台下载文件等。</td>
+</tr>
+<tr>
+<td align="left">Broadcast Receiver(广播接收器)</td>
+<td align="right">一个用于接收广播信息，并做出对应处理的组件。比如我们常见的系统广播：通知时区改变、电量低、用户改变了语言选项等。</td>
+</tr>
+<tr>
+<td align="left">Content Provider(内容提供者)</td>
+<td align="right">作为应用程序之间唯一的共享数据的途径，Content Provider主要的功能就是存储并检索数据以及向其他应用程序提供访问数据的接口。Android内置的许多数据都是使用Content Provider形式，供开发者调用的（如视频，音频，图片，通讯录等）</td>
+</tr>
+</tbody></table>
+<h3 id="1-activity的切换"><a href="#1-activity的切换" class="headerlink" title="1.activity的切换"></a>1.activity的切换</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!---声明实现应用部分可视化界面的 Activity，必须使用 AndroidManifest 中的 &lt;activity&gt; 元素表示所有 Activity。系统不会识别和运行任何未进行声明的Activity。-----&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">activity</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:label</span>=<span class="string">&quot;@string/app_name&quot;</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;com.zj.wuaipojie.ui.MainActivity&quot;</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">&quot;true&quot;</span>&gt;</span>  <span class="comment">&lt;!--当前Activity是否可以被另一个Application的组件启动：true允许被启动；false不允许被启动--&gt;</span></span><br><span class="line">    <span class="comment">&lt;!---指明这个activity可以以什么样的意图(intent)启动---&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span>  </span><br><span class="line">        <span class="comment">&lt;!--表示activity作为一个什么动作启动，android.intent.action.MAIN表示作为主activity启动---&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span>  </span></span><br><span class="line"><span class="tag">            <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.MAIN&quot;</span> /&gt;</span>  </span><br><span class="line">        <span class="comment">&lt;!--这是action元素的额外类别信息，android.intent.category.LAUNCHER表示这个activity为当前应用程序优先级最高的Activity--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span>  </span></span><br><span class="line"><span class="tag">            <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.LAUNCHER&quot;</span> /&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">activity</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;com.zj.wuaipojie.ui.ChallengeFirst&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">activity</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;com.zj.wuaipojie.ui.ChallengeFifth&quot;</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">&quot;true&quot;</span> /&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">activity</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;com.zj.wuaipojie.ui.ChallengeFourth&quot;</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">&quot;true&quot;</span> /&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">activity</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;com.zj.wuaipojie.ui.ChallengeThird&quot;</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">&quot;false&quot;</span> /&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">activity</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;com.zj.wuaipojie.ui.ChallengeSecond&quot;</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">&quot;false&quot;</span> /&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">activity</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;com.zj.wuaipojie.ui.AdActivity&quot;</span> /&gt;</span>  </span><br></pre></td></tr></table></figure>
 
-<p><img src="/../images/image-20231003011744986.png" alt="image-20231003011744986"></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">其实复制粘贴就行，只要终端输出的内容，终端运行一行代码就够了其实</span><br></pre></td></tr></table></figure>
+<p>启动广告流程：<br>启动Activity-&gt;广告Activity-&gt;主页Activity</p>
+<p>修改方法：<br>1.修改加载时间<br>2.Acitivity切换定位，修改Intent的Activity类名</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (position) &#123;  </span><br><span class="line">    <span class="keyword">case</span> <span class="number">0</span>:  </span><br><span class="line">        <span class="type">Intent</span> <span class="variable">intent</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Intent</span>();  </span><br><span class="line">        intent.setClass(it.getContext(), ChallengeFirst.class);  </span><br><span class="line">        it.getContext().startActivity(intent);  </span><br><span class="line">        <span class="keyword">return</span>;  </span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>:  </span><br><span class="line">        <span class="type">Intent</span> <span class="variable">intent2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Intent</span>();  </span><br><span class="line">        intent2.setClass(it.getContext(), ChallengeSecond.class);  </span><br><span class="line">        it.getContext().startActivity(intent2);  </span><br><span class="line">        <span class="keyword">return</span>;  </span><br><span class="line">    <span class="keyword">case</span> <span class="number">2</span>:  </span><br><span class="line">        <span class="type">Intent</span> <span class="variable">intent3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Intent</span>();  <span class="comment">//new一个Intent，</span></span><br><span class="line">        intent3.setClass(it.getContext(), AdActivity.class);  <span class="comment">//传入要切换的Acitivity的类名</span></span><br><span class="line">        it.getContext().startActivity(intent3);  <span class="comment">//启动对应的Activity</span></span><br><span class="line">        <span class="keyword">return</span>;  </span><br><span class="line">    <span class="keyword">case</span> <span class="number">3</span>:  </span><br><span class="line">        <span class="type">Intent</span> <span class="variable">intent4</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Intent</span>();  </span><br><span class="line">        intent4.setClass(it.getContext(), ChallengeFourth.class);  </span><br><span class="line">        it.getContext().startActivity(intent4);  </span><br><span class="line">        <span class="keyword">return</span>; </span><br><span class="line">    <span class="keyword">default</span>:  </span><br><span class="line">        <span class="keyword">return</span>;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p><img src="/../images/image-20231003011906360.png" alt="image-20231003011906360"></p>
-<h5 id="0x03-导入证书"><a href="#0x03-导入证书" class="headerlink" title="0x03 导入证书"></a>0x03 导入证书</h5><p>i. 开启雷电模拟器的system可以写入权限和root权限（踩坑，一定记得开System.vmdk可以写入权限，不然导入不了证书，写入会被积极拒绝）【题外话：雷电模拟器也是为了加快运行才加了这个默认限制，大家轻一点喷】</p>
-<p><img src="/../images/image-20231003012501105.png" alt="image-20231003012501105"></p>
-<p>ii. 导入证书</p>
-<p>复制粘贴 Hash值.0文件到 &#x2F;system&#x2F;etc&#x2F;security&#x2F;cacerts&#x2F;。图里面是用的MT管理器，这里大家可以各显神通，adb shell传进去也行。</p>
-<p><img src="/../images/image-20231003012725150.png" alt="image-20231003012725150"></p>
-<h5 id="0x04-配置代理"><a href="#0x04-配置代理" class="headerlink" title="0x04 配置代理"></a>0x04 配置代理</h5><p>i. 在BP中绑定监听的IP（你主机有网的那个IP，不够严谨，初学者记得是有网的那个IP就行）。</p>
-<p><img src="/../images/image-20231003012127291.png" alt="image-20231003012127291"></p>
-<p>ii. 在手机系统设置中设置代理到，BP中设置的IP和端口即可。</p>
-<p><img src="/../images/image-20231003012252080.png" alt="image-20231003012252080"></p>
-<h5 id="0x05-Done-抓包测试"><a href="#0x05-Done-抓包测试" class="headerlink" title="0x05 Done - 抓包测试"></a>0x05 Done - 抓包测试</h5><p>这里演示一下抓包U净的接口</p>
-<p><img src="/../images/image-20231003013225392.png" alt="image-20231003013225392"></p>
-<p>到此就结束了，希望搭环境过程一路顺风。</p>
+<h2 id="3-Activity生命周期"><a href="#3-Activity生命周期" class="headerlink" title="3.Activity生命周期"></a>3.Activity生命周期</h2><table>
+<thead>
+<tr>
+<th align="left">函数名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">onCreate()</td>
+<td align="left">一个Activity启动后第一个被调用的函数，常用来在此方法中进行Activity的一些初始化操作。例如创建View，绑定数据，注册监听，加载参数等。</td>
+</tr>
+<tr>
+<td align="left">onStart()</td>
+<td align="left">当Activity显示在屏幕上时，此方法被调用但此时还无法进行与用户的交互操作。</td>
+</tr>
+<tr>
+<td align="left">onResume()</td>
+<td align="left">这个方法在onStart()之后调用，也就是在Activity准备好与用户进行交互的时候调用，此时的Activity一定位于Activity栈顶，处于运行状态。</td>
+</tr>
+<tr>
+<td align="left">onPause()</td>
+<td align="left">这个方法是在系统准备去启动或者恢复另外一个Activity的时候调用，通常在这个方法中执行一些释放资源的方法，以及保存一些关键数据。</td>
+</tr>
+<tr>
+<td align="left">onStop()</td>
+<td align="left">这个方法是在Activity完全不可见的时候调用的。</td>
+</tr>
+<tr>
+<td align="left">onDestroy()</td>
+<td align="left">这个方法在Activity销毁之前调用，之后Activity的状态为销毁状态。</td>
+</tr>
+<tr>
+<td align="left">onRestart()</td>
+<td align="left">当Activity从停止stop状态恢进入start状态时调用状态。</td>
+</tr>
+</tbody></table>
+<p><img src="https://attach.52pojie.cn/forum/202212/29/105514fnc44338qubb43t3.png" alt="img"></p>
+<h2 id="4-弹窗定位-堆栈分析"><a href="#4-弹窗定位-堆栈分析" class="headerlink" title="4.弹窗定位&amp;堆栈分析"></a>4.弹窗定位&amp;堆栈分析</h2><p>修改方法：<br>1.修改xml中的versiocode<br>2.Hook弹窗(推荐算法助手开启弹窗定位)<br>3.修改dex弹窗代码<br>4.抓包修改响应体(也可以路由器拦截)</p>
+<h2 id="5-布局优化"><a href="#5-布局优化" class="headerlink" title="5.布局优化"></a>5.布局优化</h2><p>1.开发者助手抓布局<br>2.MT管理器xml搜索定位<br>3.修改xml代码</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android:visibility=&quot;gone&quot;</span><br></pre></td></tr></table></figure>
+
+<h1 id="四、课后小作业"><a href="#四、课后小作业" class="headerlink" title="四、课后小作业"></a>四、课后小作业</h1><hr>
+<p>定位并去除作业demo首页中的弹窗<br><a target="_blank" rel="noopener" href="https://wwl.lanzoub.com/iVKJk0f0pi7g">https://wwl.lanzoub.com/iVKJk0f0pi7g</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.52pojie.cn/thread-1706783-1-1.html">作业反馈贴</a></p>
 
       </section>
 
@@ -180,8 +233,8 @@
     
     <div class="card-text">
       
-        <a href="/2023/10/03/%E5%9F%BA%E7%A1%80%E5%AE%9E%E9%AA%8C/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">基础实验</h2>
+        <a href="/2023/11/21/%E6%81%AD%E5%96%9C%E4%BD%A0%E8%8E%B7%E5%BE%97%E5%B9%BF%E5%91%8A-%E5%BC%B9%E7%AA%97%E9%9D%99%E9%BB%98%E5%8D%A1/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">恭喜你获得广告_弹窗静默卡</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -195,8 +248,8 @@
     
     <div class="card-text">
       
-        <a href="/2023/10/03/hello-world/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Hello World</h2>
+        <a href="/2023/11/21/%E7%AC%AC%E4%B8%80%E8%8A%82%E8%AF%BE%C2%B7%E5%88%9D%E8%AF%86smali%EF%BC%8Cvip%E7%BB%88%E7%BB%93%E8%80%85/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">第一节课·初识smali，vip终结者</h2>
         </a>
       
       <div class="card-text--row">Older</div>

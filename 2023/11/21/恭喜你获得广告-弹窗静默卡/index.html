@@ -22,7 +22,7 @@
 
   
 
-  <title>安卓渗透测试环境搭建 | Baron&#39;s Blog</title>
+  <title>恭喜你获得广告_弹窗静默卡 | Baron&#39;s Blog</title>
 
   
 
@@ -102,25 +102,18 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">安卓渗透测试环境搭建</h1>
+          <h1 class="title-wrap">恭喜你获得广告_弹窗静默卡</h1>
           <h2 class="title-sub-wrap">
             <strong>Baron</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2023-10-03T05:34:18.118Z" itemprop="datePublished">2023-10-03</time>
+            <time  class="article-date" datetime="2023-11-21T07:37:44.000Z" itemprop="datePublished">2023-11-21</time>
           </h2>
-          
-            <h2 class="last-time">
-              <span>最后更新于</span>
-              <time  class="article-updated" datetime="2023-10-09T09:15:21.231Z" itemprop="dateUpdated">2023-10-09</time>
-            </h2>
           
           
           <ul class="wrap-list dark">
   
 </ul>
           <ul class="wrap-list dark">
-  
-    <li><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">🏷️ 网络安全</a></li>
   
 </ul>
         </div>
@@ -144,31 +137,7 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="安卓渗透测试环境搭建"><a href="#安卓渗透测试环境搭建" class="headerlink" title="安卓渗透测试环境搭建"></a>安卓渗透测试环境搭建</h1><h4 id="环境准备："><a href="#环境准备：" class="headerlink" title="环境准备："></a>环境准备：</h4><p>openssl：提供证书相关操作</p>
-<p>雷电模拟器：提供安卓环境</p>
-<p>Burpsuite：渗透测试抓包工具</p>
-<h4 id="环境搭建："><a href="#环境搭建：" class="headerlink" title="环境搭建："></a>环境搭建：</h4><h5 id="0x01-获得bp的证书"><a href="#0x01-获得bp的证书" class="headerlink" title="0x01 获得bp的证书"></a>0x01 获得bp的证书</h5><p>访问bp中设置的地址即可获得证书 cacert.der</p>
-<p><img src="/../images/image-20231003010552628.png" alt="image-20231003010552628"></p>
-<h5 id="0x02-转换证书为pem"><a href="#0x02-转换证书为pem" class="headerlink" title="0x02 转换证书为pem"></a>0x02 转换证书为pem</h5><p>计算hash值&amp;生成pem文件&amp;生成.0文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -inform der -in cacert.der -out cacert.pem</span><br><span class="line">生成pem文件</span><br><span class="line">openssl x509 -inform PEM -subject_hash_old -in cacert.pem</span><br><span class="line">第二条命令看得到的hash值，重命名pem文件为 得到的hash值.0</span><br></pre></td></tr></table></figure>
-
-<p><img src="/../images/image-20231003011744986.png" alt="image-20231003011744986"></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">其实复制粘贴就行，只要终端输出的内容，终端运行一行代码就够了其实</span><br></pre></td></tr></table></figure>
-
-<p><img src="/../images/image-20231003011906360.png" alt="image-20231003011906360"></p>
-<h5 id="0x03-导入证书"><a href="#0x03-导入证书" class="headerlink" title="0x03 导入证书"></a>0x03 导入证书</h5><p>i. 开启雷电模拟器的system可以写入权限和root权限（踩坑，一定记得开System.vmdk可以写入权限，不然导入不了证书，写入会被积极拒绝）【题外话：雷电模拟器也是为了加快运行才加了这个默认限制，大家轻一点喷】</p>
-<p><img src="/../images/image-20231003012501105.png" alt="image-20231003012501105"></p>
-<p>ii. 导入证书</p>
-<p>复制粘贴 Hash值.0文件到 &#x2F;system&#x2F;etc&#x2F;security&#x2F;cacerts&#x2F;。图里面是用的MT管理器，这里大家可以各显神通，adb shell传进去也行。</p>
-<p><img src="/../images/image-20231003012725150.png" alt="image-20231003012725150"></p>
-<h5 id="0x04-配置代理"><a href="#0x04-配置代理" class="headerlink" title="0x04 配置代理"></a>0x04 配置代理</h5><p>i. 在BP中绑定监听的IP（你主机有网的那个IP，不够严谨，初学者记得是有网的那个IP就行）。</p>
-<p><img src="/../images/image-20231003012127291.png" alt="image-20231003012127291"></p>
-<p>ii. 在手机系统设置中设置代理到，BP中设置的IP和端口即可。</p>
-<p><img src="/../images/image-20231003012252080.png" alt="image-20231003012252080"></p>
-<h5 id="0x05-Done-抓包测试"><a href="#0x05-Done-抓包测试" class="headerlink" title="0x05 Done - 抓包测试"></a>0x05 Done - 抓包测试</h5><p>这里演示一下抓包U净的接口</p>
-<p><img src="/../images/image-20231003013225392.png" alt="image-20231003013225392"></p>
-<p>到此就结束了，希望搭环境过程一路顺风。</p>
-
+        
       </section>
 
       
@@ -180,8 +149,8 @@
     
     <div class="card-text">
       
-        <a href="/2023/10/03/%E5%9F%BA%E7%A1%80%E5%AE%9E%E9%AA%8C/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">基础实验</h2>
+        <a href="/2023/12/18/wp-%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-happy-game/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">强网杯-Web-happy_game</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -195,8 +164,8 @@
     
     <div class="card-text">
       
-        <a href="/2023/10/03/hello-world/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Hello World</h2>
+        <a href="/2023/11/21/%E7%AC%AC%E4%BA%8C%E8%8A%82%E8%AF%BE%C2%B7%E6%81%AD%E5%96%9C%E4%BD%A0%E8%8E%B7%E5%BE%97%E5%B9%BF%E5%91%8A/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">第二节课·恭喜你获得广告</h2>
         </a>
       
       <div class="card-text--row">Older</div>

